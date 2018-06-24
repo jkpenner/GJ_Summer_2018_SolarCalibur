@@ -65,13 +65,13 @@ public class PlanetController : MonoBehaviour {
             asteroidQueue.Peek().isActive = true;
         }
 
-        if (Input.GetMouseButtonDown(0)) {
+        if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space)) {
             if (asteroidQueue.Count > 0) {
                 asteroidQueue.Peek().StartCharge();
             }
         }
 
-        if (Input.GetMouseButtonUp(0)) {
+        if (Input.GetMouseButtonUp(0) || Input.GetKeyUp(KeyCode.Space)) {
             if (asteroidQueue.Count > 0) {
                 asteroidQueue.Dequeue().Launch();
             }
