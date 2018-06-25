@@ -84,7 +84,7 @@ public class Asteroid : MonoBehaviour {
     }
 
 
-    public void Update() {
+    public void FixedUpdate() {
 
         targeting.gameObject.SetActive(isActive && isOrbitting);
 
