@@ -29,6 +29,8 @@ public class MoveController : MonoBehaviour {
 
     float vDamp;
 
+    public bool canMoveForwardAndBack;
+
     // Update is called once per frame
     void FixedUpdate () {
 
@@ -59,7 +61,10 @@ public class MoveController : MonoBehaviour {
         */
 
         //move forward and back
-        pivot.Translate(Vector3.forward * fInput * Time.fixedDeltaTime * 10f,transform);
+        if (canMoveForwardAndBack)
+        {
+            pivot.Translate(Vector3.forward * fInput * Time.fixedDeltaTime * 10f, transform);
+        }
 
         //orbit around enemy
         target.Rotate(new Vector3(0, -hInput * orbitSpeed, 0));
