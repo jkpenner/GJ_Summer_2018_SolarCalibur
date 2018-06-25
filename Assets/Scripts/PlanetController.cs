@@ -165,6 +165,27 @@ public class PlanetController : MonoBehaviour {
     /// Is Triggered when one of the planet's asteroids collides with another object
     /// </summary>
     private void OnAsteroidCollided(Asteroid asteroid) {
+        StartCoroutine(TeleportAsteroid(asteroid));
+    }
 
+    private IEnumerator TeleportAsteroid(Asteroid asteroid) {
+        var lr = asteroid.GetComponent<LineRenderer>();
+        if (lr != null) lr.enabled = false;
+
+        asteroid.gameObject.SetActive(false);
+        asteroid.orbit_direction = UnityEngine.Random.Range(0, 2) == 0 ? 1 : -1;
+
+
+        float angle_offset = Vector3.Angle(Vector3.right, transform.right);
+        asteroid.orbit_angle = asteroid.orbit_direction == 1 ? angle_offset : angle_offset + 180f;
+
+
+
+        yield return new WaitForSeconds(1f);
+
+        asteroid.transform.position = transform.position - (transform.forward * asteroid.return_distance);
+        if (lr != null) lr.enabled = true;
+        asteroid.gameObject.SetActive(true);
+        asteroid.StartReturn();
     }
 }

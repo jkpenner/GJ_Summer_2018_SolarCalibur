@@ -11,7 +11,6 @@ public class Asteroid : MonoBehaviour {
     public RectTransform targeting;
     public new Rigidbody rigidbody;
 
-
     [Header("Orbit")]
     public float orbit_speed = 6f;
     public float orbit_radius = 1f;
@@ -41,6 +40,8 @@ public class Asteroid : MonoBehaviour {
     private bool isOrbitting = true;
     private bool isReturning = false;
     private float returningPercent = 0f;
+
+
 
     public bool IsOrbitting { get { return isOrbitting; } }
 
@@ -158,10 +159,16 @@ public class Asteroid : MonoBehaviour {
         if (isReturning) return;
 
         if (Vector3.Distance(this.rigidbody.position, TargetOrbitPosition) > return_distance) {
-            Debug.Log("Returning");
-            isReturning = true;
-            StartCoroutine(StartReturning(1f));
+            StartReturn();
         }
+    }
+
+    public void StartReturn() {
+        if (isReturning) return;
+
+        isReturning = true;
+        isOrbitting = false;
+        StartCoroutine(StartReturning(1f));
     }
 
     private IEnumerator StartReturning(float transition_time) {
