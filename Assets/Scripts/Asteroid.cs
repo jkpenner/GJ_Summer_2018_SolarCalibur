@@ -5,6 +5,7 @@ using UnityEngine;
 public class Asteroid : MonoBehaviour {
     public event System.Action<Asteroid> EventLaunched;
     public event System.Action<Asteroid> EventReturned;
+    public event System.Action<Asteroid> EventCollided;
 
     [Header("Setup")]
     public RectTransform targeting;
@@ -67,6 +68,10 @@ public class Asteroid : MonoBehaviour {
 
         isReturning = true;
         returningPercent = 1f;
+
+        if (EventCollided != null) {
+            EventCollided.Invoke(this);
+        }
     }
 
     private void Awake() {
