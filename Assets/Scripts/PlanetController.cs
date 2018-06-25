@@ -5,14 +5,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Planet))]
 public class PlanetController : MonoBehaviour {
+    private Planet _planet;
+
     [Header("Movement")]
     [SerializeField]
     private float moveSpeed = 5f;
     [SerializeField]
     public Transform moveTarget;
     [SerializeField]
-    public float distanceFromMoveTarget = 3f;
+    public float distanceFromMoveTarget = 10f;
 
     [Header("Asteroids")]
     [SerializeField]
@@ -27,6 +30,14 @@ public class PlanetController : MonoBehaviour {
     private LinkedList<Asteroid> asteroidQueue;
 
     void Start() {
+        // Setup event liseners on the planet being controlled
+        _planet = GetComponent<Planet>();
+        _planet.EventTargetChanged += OnTargetChanged;
+        // Setup trigger the OnTargetChange if there is already a target
+        if (_planet.TargetPlanet != null) {
+            OnTargetChanged(_planet.TargetPlanet);
+        }
+
         asteroids = new List<Asteroid>();
         //asteroidQueue = new Queue<Asteroid>();
         asteroidQueue = new LinkedList<Asteroid>();
@@ -40,24 +51,30 @@ public class PlanetController : MonoBehaviour {
         UpdateActiveAsteroid();
     }
 
+    private void OnTargetChanged(Planet newTarget) {
+        this.moveTarget = newTarget.transform;
+    }
+
     /// <summary>
     /// Moves the planet around the its target by its move speed.
     /// </summary>
     /// <param name="input">Range [-1.0, 1.0]</param>
     public void MoveAroundTarget(float input) {
-        // Snap the planet to the correct distance from the target
-        if (Vector3.Distance(moveTarget.transform.position, transform.position) != distanceFromMoveTarget) {
-            Vector3 fromTarget = (transform.position - moveTarget.transform.position).normalized;
-            transform.position = moveTarget.transform.position + (fromTarget * distanceFromMoveTarget);
+        if (moveTarget != null) {
+            // Snap the planet to the correct distance from the target
+            if (Vector3.Distance(moveTarget.transform.position, transform.position) != distanceFromMoveTarget) {
+                Vector3 fromTarget = (transform.position - moveTarget.transform.position).normalized;
+                transform.position = moveTarget.transform.position + (fromTarget * distanceFromMoveTarget);
+            }
+
+            // Calculate the degree of movment around the target, based on distance
+            float rotateAmount = (-Mathf.Clamp(input, -1f, 1f) * moveSpeed * Time.deltaTime)
+                / (2.0f * Mathf.PI * distanceFromMoveTarget) * 360f;
+
+            // Rotate the planet around the target's position
+            transform.RotateAround(moveTarget.transform.position, Vector3.up, rotateAmount);
+            transform.rotation = Quaternion.LookRotation((moveTarget.position - transform.position).normalized);
         }
-
-        // Calculate the degree of movment around the target, based on distance
-        float rotateAmount = (-Mathf.Clamp(input, -1f, 1f) * moveSpeed * Time.deltaTime)
-            / (2.0f * Mathf.PI * distanceFromMoveTarget) * 360f;
-
-        // Rotate the planet around the target's position
-        transform.RotateAround(moveTarget.transform.position, Vector3.up, rotateAmount);
-        transform.rotation = Quaternion.LookRotation((moveTarget.position - transform.position).normalized);
     }
 
     /// <summary>
