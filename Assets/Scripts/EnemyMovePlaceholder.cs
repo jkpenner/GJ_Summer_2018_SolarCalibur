@@ -16,17 +16,23 @@ public class EnemyMovePlaceholder : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void FixedUpdate () {
-        if (Time.time > timeTilChangeDirection + timer)
+	void FixedUpdate ()
+    {
+        if(Time.time > 0)
         {
-            timer = Time.time;
-            moveDirection = Random.insideUnitSphere.normalized;
-            moveDirection.y = 0f;
-            timeTilChangeDirection = Random.Range(1f, 4f);
+            if (Time.time > timeTilChangeDirection + timer)
+            {
+                timer = Time.time;
+                moveDirection = Random.insideUnitSphere.normalized;
+                //Enemy can only move in x direction
+                moveDirection.y = 0f;
+                moveDirection.z = 0f;
+                timeTilChangeDirection = Random.Range(1f, 4f);
+            }
+
+            var speed = Mathf.PingPong(maxSpeed * 2f, Time.time) - maxSpeed;
+
+            transform.Translate(moveDirection * speed * Time.fixedDeltaTime);
         }
-
-        var speed = Mathf.PingPong(maxSpeed * 2f, Time.time) - maxSpeed;
-
-        transform.Translate(moveDirection * speed * Time.fixedDeltaTime);
     }
 }

@@ -52,14 +52,12 @@ public class PlanetController : MonoBehaviour {
     void Update() {
         Vector3 input = new Vector3(Input.GetAxis("Horizontal"), 0f, 0f);
         transform.localPosition += input * moveSpeed * Time.deltaTime;
-        if (Mathf.Abs(transform.localPosition.x) > moveDistanceMax && moveDistanceMax > 0f) {
+        if (Mathf.Abs(transform.localPosition.x) > moveDistanceMax && moveDistanceMax > 0f)
+        {
             float new_x = (transform.localPosition.x >= 0 ? 1 : -1) * moveDistanceMax;
 
             transform.localPosition = new Vector3(new_x, 0f, 0f);
         }
-
-
-
 
         if (asteroidQueue.Count > 0) {
             asteroidQueue.Peek().isActive = true;
