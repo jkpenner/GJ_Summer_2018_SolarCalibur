@@ -123,6 +123,7 @@ GameObject:
   - component: {fileID: 70934922}
   - component: {fileID: 70934921}
   - component: {fileID: 70934923}
+  - component: {fileID: 70934924}
   m_Layer: 0
   m_Name: PlanetObject (1)
   m_TagString: Untagged
@@ -171,12 +172,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpeed: 3
---- !u!114 &141626861 stripped
+--- !u!114 &70934924
 MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114175697428146518, guid: 19592a7a8b6d8b446a48ed6cc2298ea1,
-    type: 2}
-  m_PrefabInternal: {fileID: 1820395765}
-  m_Script: {fileID: 11500000, guid: a9442b8e1220bde4c86c314fe6d21cef, type: 3}
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 70934920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f06709e69af98d47aa22ebf512e2fec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxHealth: 10
+  _temp_intial_target: {fileID: 0}
 --- !u!4 &141626862 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4077149964510312, guid: 19592a7a8b6d8b446a48ed6cc2298ea1,
@@ -267,7 +275,7 @@ Prefab:
         type: 2}
       propertyPath: planet
       value: 
-      objectReference: {fileID: 141626861}
+      objectReference: {fileID: 1095117283}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2debb7fbf61876e4cba598b24cc32c03, type: 2}
   m_IsPrefabParent: 0
@@ -403,6 +411,12 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1d836213fb4f4014d967108b049a9e9f, type: 2}
   m_IsPrefabParent: 0
+--- !u!114 &1095117283 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114876940918610284, guid: 19592a7a8b6d8b446a48ed6cc2298ea1,
+    type: 2}
+  m_PrefabInternal: {fileID: 1820395765}
+  m_Script: {fileID: 11500000, guid: 8f06709e69af98d47aa22ebf512e2fec, type: 3}
 --- !u!1 &1434743132
 GameObject:
   m_ObjectHideFlags: 0
@@ -631,6 +645,11 @@ Prefab:
       propertyPath: distanceFromMoveTarget
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 114876940918610284, guid: 19592a7a8b6d8b446a48ed6cc2298ea1,
+        type: 2}
+      propertyPath: _temp_intial_target
+      value: 
+      objectReference: {fileID: 70934924}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 19592a7a8b6d8b446a48ed6cc2298ea1, type: 2}
   m_IsPrefabParent: 0
