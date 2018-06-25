@@ -15,6 +15,8 @@ public class Planet : MonoBehaviour {
     public int MaxHealth { get { return _maxHealth; } }
     public int CurHealth { get { return _curHealth; } }
 
+    [Header("Temp Assigner: Assigned by the Game Manager")]
+    public Planet _temp_intial_target = null;
     // Is assigned from the SpawnPlanet method in GameManager
     public Planet TargetPlanet { get; private set; }
 
@@ -45,6 +47,11 @@ public class Planet : MonoBehaviour {
     private void Awake() {
         this.IsAlive = true;
         this._curHealth = this._maxHealth;
+
+        // Temp Code: used to set target without uses of GameManager
+        if (_temp_intial_target != null) {
+            SetTargetPlanet(_temp_intial_target);
+        }
     }
 
     public void SetPlayerStatus(bool isPlayer, bool force_events = false) {

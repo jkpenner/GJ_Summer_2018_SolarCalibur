@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerCamera : MonoBehaviour {
-    public Transform target;
     public float followRate = 1f;
+    [Header("Temp Assigner: Assigned by Events")]
+    public Transform target;
 
     public void OnEnable() {
         // Check if there is already a player planet assigned when enabled
