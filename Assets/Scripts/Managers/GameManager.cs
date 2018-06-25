@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : Singleton<GameManager> {
     private bool _isGameActive = false;
@@ -97,6 +98,7 @@ public class GameManager : Singleton<GameManager> {
             enemyPlanet = Instantiate<Planet>(enemyPlanetPrefab);
             enemyPlanet.transform.SetParent(this.transform);
             enemyPlanet.transform.position = enemyPlanetSpawn.position;
+            enemyPlanet.EventDestroyed += OnPlanetDestroyed;
 
             if (enemyPlanet != null)
                 MsgRelay.TriggerPlanetSpawned(enemyPlanet);
@@ -109,6 +111,7 @@ public class GameManager : Singleton<GameManager> {
             playerPlanet = Instantiate<Planet>(playerPlanetPrefab);
             playerPlanet.transform.SetParent(this.transform);
             playerPlanet.transform.position = playerPlanetSpawn.position;
+            playerPlanet.EventDestroyed += OnPlanetDestroyed;
 
             if (playerPlanet != null)
                 MsgRelay.TriggerPlanetSpawned(playerPlanet);
@@ -122,6 +125,21 @@ public class GameManager : Singleton<GameManager> {
             playerPlanet.SetTargetPlanet(enemyPlanet);
             enemyPlanet.SetTargetPlanet(playerPlanet);
         }
+    }
+
+    public void OnPlanetDestroyed(Planet planet) {
+        planet.EventDestroyed -= OnPlanetDestroyed;
+        Destroy(planet.gameObject);
+
+        InternalCompleteGame();
+
+        StartCoroutine(ReloadScene());
+    }
+
+    public IEnumerator ReloadScene() {
+        yield return new WaitForSeconds(1f);
+        // Temp Code
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     private void InternalStartGame() {
