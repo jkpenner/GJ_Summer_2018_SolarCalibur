@@ -5,7 +5,7 @@ using UnityEngine;
 public class Asteroid : MonoBehaviour {
     public event System.Action<Asteroid> EventLaunched;
     public event System.Action<Asteroid> EventReturned;
-    public event System.Action<Asteroid> EventCollided;
+    public event System.Action<Asteroid, Planet> EventCollided;
 
     [Header("Setup")]
     public RectTransform targeting;
@@ -70,8 +70,13 @@ public class Asteroid : MonoBehaviour {
         isReturning = true;
         returningPercent = 1f;
 
+        var planet = collision.gameObject.GetComponent<Planet>();
+        if (planet == null) {
+            planet = collision.gameObject.GetComponentInParent<Planet>();
+        }
+
         if (EventCollided != null) {
-            EventCollided.Invoke(this);
+            EventCollided.Invoke(this, planet);
         }
     }
 

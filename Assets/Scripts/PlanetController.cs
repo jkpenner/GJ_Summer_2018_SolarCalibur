@@ -164,8 +164,18 @@ public class PlanetController : MonoBehaviour {
     /// <summary>
     /// Is Triggered when one of the planet's asteroids collides with another object
     /// </summary>
-    private void OnAsteroidCollided(Asteroid asteroid) {
+    private void OnAsteroidCollided(Asteroid asteroid, Planet hitPlanet) {
         StartCoroutine(TeleportAsteroid(asteroid));
+
+        if (hitPlanet != null) {
+            Debug.LogFormat("[{0}] Hit {1}", this.name, hitPlanet.name);
+
+            hitPlanet.Damage(this._planet, 2);
+
+        } else {
+            Debug.LogFormat("[{0}] Hit something that was not a planet");
+        }
+
     }
 
     private IEnumerator TeleportAsteroid(Asteroid asteroid) {
