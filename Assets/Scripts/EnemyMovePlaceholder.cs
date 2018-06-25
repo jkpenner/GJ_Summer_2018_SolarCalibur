@@ -6,7 +6,7 @@ public class EnemyMovePlaceholder : MonoBehaviour {
 
     float timeTilChangeDirection;
     float timer;
-    Vector3 moveDirection;
+    Vector3 moveDirection = Vector3.zero;
 
     public float maxSpeed;
 
