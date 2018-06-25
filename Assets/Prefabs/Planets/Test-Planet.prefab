@@ -38,6 +38,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4077149964510312}
   - component: {fileID: 114175697428146518}
+  - component: {fileID: 114876940918610284}
   m_Layer: 0
   m_Name: Test-Planet
   m_TagString: Untagged
@@ -126,10 +127,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
-  moveDistanceMax: 1.8
+  moveTarget: {fileID: 0}
+  distanceFromMoveTarget: 10
   asteroidPrefab: {fileID: 114626434171317160, guid: e6b5a5a4fd5fde54f92f7e8ab04bfbcd,
     type: 2}
   asteroidCount: 4
+--- !u!114 &114876940918610284
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1863391188234744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f06709e69af98d47aa22ebf512e2fec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxHealth: 10
 --- !u!135 &135318950145177542
 SphereCollider:
   m_ObjectHideFlags: 1
