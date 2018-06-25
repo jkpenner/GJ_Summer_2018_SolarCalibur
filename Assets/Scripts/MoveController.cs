@@ -20,11 +20,14 @@ public class MoveController : MonoBehaviour {
         pivot.position = target.position + (Vector3.forward * 15f);
         pivot.LookAt(target);
     }
+
+    public float orbitSpeed; //speed for rotating around enemy
+
     float hInput; //input for rotating around enemy
     float vInput; //input for vertical movement
     float fInput; //input for moving towards and away from enemy
 
-    public float vDamp;
+    float vDamp;
 
     // Update is called once per frame
     void FixedUpdate () {
@@ -41,6 +44,7 @@ public class MoveController : MonoBehaviour {
         //turn slower when you're not moving
         var turnSpeed = Mathf.Abs(hInput) > .1 ? 5:3f;
 
+        //clamp vertical distance from enemy
         var yDist = Mathf.Abs((target.position - transform.position).y);
         vDamp = yDist > 3f && Mathf.Sign(vInput) != Mathf.Sign((target.position - transform.position).y) ? Mathf.Lerp(vDamp,yDist,Time.deltaTime * 3f) : 1f;
         transform.Translate(Vector3.up * vInput * Time.fixedDeltaTime * (10f / Mathf.Pow(vDamp,2f)));
@@ -51,15 +55,17 @@ public class MoveController : MonoBehaviour {
             transform.position = newPos;
         }
 
+        //move forward and back
         pivot.Translate(Vector3.forward * -fInput * Time.fixedDeltaTime * 10f,transform);
 
-        target.Rotate(new Vector3(0, -hInput, 0));
+        //orbit around enemy
+        target.Rotate(new Vector3(0, -hInput * orbitSpeed, 0));
 
         var p = pivot.position;
         transform.position = new Vector3(p.x, transform.position.y, p.z);
 
         //look at enemy
-        Vector3 direction = target.position - transform.position;
+        Vector3 direction = enemy.position - transform.position;
         Quaternion toRotation = Quaternion.LookRotation(direction);
         transform.rotation = Quaternion.Lerp(transform.rotation, toRotation, turnSpeed * Time.deltaTime);
     }
