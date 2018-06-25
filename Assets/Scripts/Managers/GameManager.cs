@@ -7,7 +7,40 @@ public class GameManager : Singleton<GameManager> {
     private bool _isGameActive = false;
     private bool _isGamePaused = false;
 
+    private Planet playerPlanet;
+    private Planet enemyPlanet;
+
+    [Header("Player Spawn Info")]
+    [SerializeField]
+    private Planet playerPlanetPrefab;
+    [SerializeField]
+    private Transform playerPlanetSpawn;
+
+    [Header("Enemy Spawn Info")]
+    [SerializeField]
+    private Planet enemyPlanetPrefab;
+    [SerializeField]
+    private Transform enemyPlanetSpawn;
+
     #region Static Properties and Methods
+    static public Planet PlayerPlanet {
+        get {
+            if (Exists) {
+                return Instance.playerPlanet;
+            }
+            return null;
+        }
+    }
+
+    static public Planet EnemyPlanet {
+        get {
+            if (Exists) {
+                return Instance.enemyPlanet;
+            }
+            return null;
+        }
+    }
+
     static public bool IsGamePaused {
         get {
             if (Exists) {
@@ -54,7 +87,41 @@ public class GameManager : Singleton<GameManager> {
     }
 
     public void Start() {
+        SpawnPlanets();
+
         InternalStartGame();
+    }
+
+    private void SpawnPlanets() {
+        if (enemyPlanetPrefab != null) {
+            enemyPlanet = Instantiate<Planet>(enemyPlanetPrefab);
+            enemyPlanet.transform.SetParent(this.transform);
+            enemyPlanet.transform.position = enemyPlanetSpawn.position;
+
+            if (enemyPlanet != null)
+                MsgRelay.TriggerPlanetSpawned(enemyPlanet);
+            enemyPlanet.SetPlayerStatus(false);
+        } else {
+            Debug.LogWarning("[GameManager]: No Enemy Planet Prefab assigned.");
+        }
+
+        if (playerPlanetPrefab != null) {
+            playerPlanet = Instantiate<Planet>(playerPlanetPrefab);
+            playerPlanet.transform.SetParent(this.transform);
+            playerPlanet.transform.position = playerPlanetSpawn.position;
+
+            if (playerPlanet != null)
+                MsgRelay.TriggerPlanetSpawned(playerPlanet);
+            playerPlanet.SetPlayerStatus(true, true);
+        } else {
+            Debug.LogWarning("[GameManager]: No Enemy Planet Prefab assigned.");
+        }
+
+        if (enemyPlanet != null && playerPlanet != null) {
+            Debug.Log("Setting up targets");
+            playerPlanet.SetTargetPlanet(enemyPlanet);
+            enemyPlanet.SetTargetPlanet(playerPlanet);
+        }
     }
 
     private void InternalStartGame() {
