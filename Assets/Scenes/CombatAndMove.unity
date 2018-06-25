@@ -466,6 +466,11 @@ TrailRenderer:
     generateLightingData: 0
   m_MinVertexDistance: 0.1
   m_Autodestruct: 0
+--- !u!4 &967262228 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4474680538103466, guid: ea9ae99539896824aa13855f0eff5dcc,
+    type: 2}
+  m_PrefabInternal: {fileID: 783914292}
 --- !u!1 &1426370410
 GameObject:
   m_ObjectHideFlags: 0
@@ -706,7 +711,7 @@ Prefab:
         type: 2}
       propertyPath: enemy
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 967262228}
     - target: {fileID: 114548396626357652, guid: 555188c24cf92344eaa46d258ca761b8,
         type: 2}
       propertyPath: target
@@ -716,6 +721,10 @@ Prefab:
         type: 2}
       propertyPath: orbitSpeed
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1845339103833810, guid: 555188c24cf92344eaa46d258ca761b8, type: 2}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 555188c24cf92344eaa46d258ca761b8, type: 2}
