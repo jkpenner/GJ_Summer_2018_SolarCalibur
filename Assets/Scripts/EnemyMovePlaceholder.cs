@@ -21,7 +21,7 @@ public class EnemyMovePlaceholder : MonoBehaviour {
         {
             timer = Time.time;
             moveDirection = Random.insideUnitSphere.normalized;
-            moveDirection.y = moveDirection.y / 2f;
+            moveDirection.y = 0f;
             timeTilChangeDirection = Random.Range(1f, 4f);
         }
 

@@ -36,15 +36,17 @@ public class MoveController : MonoBehaviour {
         pivot.LookAt(target);
 
         hInput = Input.GetAxis("Horizontal");
-        vInput = Input.GetAxis("Vertical");
+        //vInput = Input.GetAxis("Vertical");
 
         //up and down arrows mapped to separate axis
-        fInput = Input.GetAxis("Vertical2");
+        fInput = Input.GetAxis("Vertical");
 
         //turn slower when you're not moving
         var turnSpeed = Mathf.Abs(hInput) > .1 ? 5:3f;
 
         //clamp vertical distance from enemy
+
+        /*
         var yDist = Mathf.Abs((target.position - transform.position).y);
         vDamp = yDist > 3f && Mathf.Sign(vInput) != Mathf.Sign((target.position - transform.position).y) ? Mathf.Lerp(vDamp,yDist,Time.deltaTime * 3f) : 1f;
         transform.Translate(Vector3.up * vInput * Time.fixedDeltaTime * (10f / Mathf.Pow(vDamp,2f)));
@@ -54,9 +56,10 @@ public class MoveController : MonoBehaviour {
             newPos.y = target.position.y - Mathf.Clamp(target.position.y - transform.position.y, -4f, 4f);
             transform.position = newPos;
         }
+        */
 
         //move forward and back
-        pivot.Translate(Vector3.forward * -fInput * Time.fixedDeltaTime * 10f,transform);
+        pivot.Translate(Vector3.forward * fInput * Time.fixedDeltaTime * 10f,transform);
 
         //orbit around enemy
         target.Rotate(new Vector3(0, -hInput * orbitSpeed, 0));
