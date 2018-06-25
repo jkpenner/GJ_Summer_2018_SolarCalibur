@@ -57,6 +57,7 @@ public class PlanetController : MonoBehaviour {
 
         // Rotate the planet around the target's position
         transform.RotateAround(moveTarget.transform.position, Vector3.up, rotateAmount);
+        transform.rotation = Quaternion.LookRotation((moveTarget.position - transform.position).normalized);
     }
 
     /// <summary>
