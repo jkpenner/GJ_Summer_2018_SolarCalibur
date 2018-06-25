@@ -51,3 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7175b7c2f3472a54197ce258c40773b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerPlanetPrefab: {fileID: 0}
+  playerPlanetSpawn: {fileID: 0}
+  enemyPlanetPrefab: {fileID: 0}
+  enemyPlanetSpawn: {fileID: 0}
