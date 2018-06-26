@@ -7,6 +7,7 @@ public class PlanetAI : MonoBehaviour
     public GameObject Asteroid;       //The object this planet will fire at the Player
     public float FireTimerMin = 1.5f; //The min time this enemy planet will take before firing it's next shot
     public float FireTimerMax = 5.0f; //The max time this enemy planet will take before firing it's next shot
+    public float MaxMove = 3f;        //The maximum the enemy planet can move from center
 
     //TODO:: Add player object here so enemy can target the player
 
@@ -15,25 +16,23 @@ public class PlanetAI : MonoBehaviour
     private bool RIGHT = true;
     private bool LEFT = false;
     private bool direction;
+    private float maxMove;
     private bool wait;
 
     void Start ()
     {
-        MoveTimer = Random.Range(.5f, 2f);
-        direction = RIGHT;
-        wait = Random.value > 0.5f;
+        direction = LEFT;
+        UpdateMoveVars();
         FireTimer = Random.Range(FireTimerMin, FireTimerMax);
     }
 	
 	void Update ()
     {
-        if (!wait) Move();
         MoveTimer -= Time.deltaTime;
-        if (MoveTimer <= 0.0f) {
-            MoveTimer = Random.Range(.1f, .5f);
-            direction = !direction;
-            wait = Random.value > 0.5f;
-        }
+
+        if (!wait) Move();
+        if (Mathf.Abs(transform.position.x) >= MaxMove) direction = !direction;
+        if (MoveTimer <= 0.0f) UpdateMoveVars();
 
         FireTimer -= Time.deltaTime;
 
@@ -51,6 +50,13 @@ public class PlanetAI : MonoBehaviour
         if (!direction) speed = -speed;
         transform.position += transform.right * speed;
 	}
+
+    void UpdateMoveVars()
+    {
+        MoveTimer = Random.Range(.5f, 2f);
+        direction = !direction;
+        wait = Random.value > 0.5f;
+    }
 
 	void Fire()
     {
