@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class Rocket : MonoBehaviour
 {
-    Rigidbody rb;
-
     public Transform target;
     public float accel;
     public float turnSpeed;
     public float lifeSpan;
+    public float Damage;
+
+    Rigidbody rb;
+
 
     // Use this for initialization
     void Start ()
