@@ -77,11 +77,13 @@ public class Planet : MonoBehaviour {
         }
     }
 
-    public void Damage(Planet source, int amount) {
+    public void Damage(int amount) {
         if (amount <= 0) return;
 
         _curHealth -= amount;
         _curHealth = Mathf.Max(_curHealth, 0);
+
+        Debug.LogFormat("[Hit = {0}] Damage {1}  Health {2}", this.name, amount, _curHealth);
 
         if (_eventDamaged != null)
             _eventDamaged.Invoke(this);

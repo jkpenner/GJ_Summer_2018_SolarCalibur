@@ -10,13 +10,14 @@ public class Asteroid : MonoBehaviour {
     [Header("Setup")]
     public RectTransform targeting;
     public new Rigidbody rigidbody;
+    public int Damage;
 
     [Header("Orbit")]
     public float orbit_speed = 6f;
     public float orbit_radius = 1f;
 
     [HideInInspector] // Assigned by PlanetController
-    public Transform orbit_target;
+    public Planet orbit_target;
     [HideInInspector] // Assigned by PlanetController
     public float orbit_angle = 0f;
     [HideInInspector] // Assigned by PlanetController
@@ -58,7 +59,7 @@ public class Asteroid : MonoBehaviour {
         get {
             Vector3 toPosition = new Vector3(Mathf.Cos(orbit_angle), 0f, Mathf.Sin(orbit_angle));
             if (orbit_target != null) {
-                return orbit_target.position + (toPosition * OrbitRadius);
+                return orbit_target.transform.position + (toPosition * OrbitRadius);
             }
             return toPosition * OrbitRadius;
         }
@@ -75,7 +76,8 @@ public class Asteroid : MonoBehaviour {
             planet = collision.gameObject.GetComponentInParent<Planet>();
         }
 
-        if (EventCollided != null) {
+        if (planet != null && EventCollided != null)
+        {
             EventCollided.Invoke(this, planet);
         }
     }
@@ -91,6 +93,13 @@ public class Asteroid : MonoBehaviour {
 
 
     public void FixedUpdate() {
+        
+        if(orbit_target == null || orbit_target.IsAlive == false)
+        {
+            return;
+            //Destroy(this); //TODO:: put in a better place
+
+        }
 
         targeting.gameObject.SetActive(isActive && isOrbitting);
 
@@ -117,7 +126,7 @@ public class Asteroid : MonoBehaviour {
             Vector3 forward = Vector3.Cross(toPosition, Vector3.up) * orbit_direction;
 
             // Update the rigidbody's position and rotation values
-            rigidbody.MovePosition(orbit_target.position + (toPosition * OrbitRadius));
+            rigidbody.MovePosition(orbit_target.transform.position + (toPosition * OrbitRadius));
             rigidbody.MoveRotation(Quaternion.LookRotation(forward));
         } else {
 

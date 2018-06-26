@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -270,7 +270,7 @@ Prefab:
         type: 2}
       propertyPath: enemyPlanetPrefab
       value: 
-      objectReference: {fileID: 114474557544230756, guid: 6e13b67dad771da429287e2e714e7ddc,
+      objectReference: {fileID: 114292342223654988, guid: ea9ae99539896824aa13855f0eff5dcc,
         type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3d9732024a11d45408cdc5ac3670beb5, type: 2}

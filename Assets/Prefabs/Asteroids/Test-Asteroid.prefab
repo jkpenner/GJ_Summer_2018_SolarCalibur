@@ -361,6 +361,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targeting: {fileID: 224089732423353518}
   rigidbody: {fileID: 54844118823342328}
+  Damage: 5
   orbit_speed: 6
   orbit_radius: 1
   orbit_target: {fileID: 0}

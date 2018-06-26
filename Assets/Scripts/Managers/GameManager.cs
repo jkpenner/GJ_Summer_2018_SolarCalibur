@@ -13,15 +13,15 @@ public class GameManager : Singleton<GameManager> {
 
     [Header("Player Spawn Info")]
     [SerializeField]
-    private Planet playerPlanetPrefab;
+    private Planet playerPlanetPrefab = null;
     [SerializeField]
-    private Transform playerPlanetSpawn;
+    private Transform playerPlanetSpawn = null;
 
     [Header("Enemy Spawn Info")]
     [SerializeField]
-    private Planet enemyPlanetPrefab;
+    private Planet enemyPlanetPrefab = null;
     [SerializeField]
-    private Transform enemyPlanetSpawn;
+    private Transform enemyPlanetSpawn = null;
 
     #region Static Properties and Methods
     static public Planet PlayerPlanet {

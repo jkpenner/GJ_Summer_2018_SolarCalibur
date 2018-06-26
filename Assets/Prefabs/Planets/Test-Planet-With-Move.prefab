@@ -59,7 +59,7 @@ GameObject:
   - component: {fileID: 135967363008375146}
   m_Layer: 0
   m_Name: Sphere
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -203,6 +203,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 0}
   target: {fileID: 0}
+  orbitSpeed: 0
 --- !u!114 &114767718706075378
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -215,7 +216,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 0
-  moveDistanceMax: 0
+  moveTarget: {fileID: 0}
+  distanceFromMoveTarget: 10
   asteroidPrefab: {fileID: 114626434171317160, guid: e6b5a5a4fd5fde54f92f7e8ab04bfbcd,
     type: 2}
   asteroidCount: 4

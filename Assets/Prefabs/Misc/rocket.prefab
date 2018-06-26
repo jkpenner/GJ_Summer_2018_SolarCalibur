@@ -492,6 +492,7 @@ MonoBehaviour:
   accel: 5
   turnSpeed: 1
   lifeSpan: 10
+  Damage: 1
 --- !u!135 &135502973425782304
 SphereCollider:
   m_ObjectHideFlags: 1

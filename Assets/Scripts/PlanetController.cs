@@ -47,6 +47,9 @@ public class PlanetController : MonoBehaviour {
             var asteroid = SpawnAsteroid(asteroidPrefab);
             asteroid.orbit_direction = UnityEngine.Random.Range(0, 2) == 0 ? 1 : -1;
             asteroid.orbit_angle = ((float)i / asteroidCount) * 360f;
+            // Setup the asteroid's parent
+            asteroid.orbit_target = _planet;
+
         }
         UpdateActiveAsteroid();
     }
@@ -83,11 +86,8 @@ public class PlanetController : MonoBehaviour {
     public Asteroid SpawnAsteroid(Asteroid prefab) {
         var new_asteroid = Instantiate(asteroidPrefab);
 
-        // Setup the asteroid's parent
-        new_asteroid.orbit_target = this.transform;
-
         // Setup lisenters for the asteroid's event
-        new_asteroid.EventLaunched += OnAsteroidLauncehd;
+        new_asteroid.EventLaunched += OnAsteroidLaunched;
         new_asteroid.EventReturned += OnAsteroidReturned;
         new_asteroid.EventCollided += OnAsteroidCollided;
 
@@ -102,7 +102,7 @@ public class PlanetController : MonoBehaviour {
     /// </summary>
     public void DestroyAsteroid(Asteroid instance) {
         if (asteroids.Contains(instance)) {
-            instance.EventLaunched -= OnAsteroidLauncehd;
+            instance.EventLaunched -= OnAsteroidLaunched;
             instance.EventReturned -= OnAsteroidReturned;
             instance.EventCollided -= OnAsteroidCollided;
 
@@ -149,7 +149,7 @@ public class PlanetController : MonoBehaviour {
     /// Is Triggered when one of the planet's asteroids is launched
     /// </summary>
     /// <param name="asteroid"></param>
-    private void OnAsteroidLauncehd(Asteroid asteroid) {
+    private void OnAsteroidLaunched(Asteroid asteroid) {
         asteroid.isActive = false;
     }
 
@@ -170,7 +170,7 @@ public class PlanetController : MonoBehaviour {
         if (hitPlanet != null) {
             Debug.LogFormat("[{0}] Hit {1}", this.name, hitPlanet.name);
 
-            hitPlanet.Damage(this._planet, 2);
+            hitPlanet.Damage(asteroid.Damage);
 
         } else {
             Debug.LogFormat("[{0}] Hit something that was not a planet");

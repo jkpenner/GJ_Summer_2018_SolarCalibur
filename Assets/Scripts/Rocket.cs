@@ -8,15 +8,11 @@ public class Rocket : MonoBehaviour
     public float accel;
     public float turnSpeed;
     public float lifeSpan;
-    public float Damage;
-
-    Rigidbody rb;
-
+    public int Damage;
 
     // Use this for initialization
     void Start ()
     {
-        rb = GetComponent<Rigidbody>();
         target = GameObject.FindGameObjectWithTag("Player").transform;
 	}
 
@@ -56,8 +52,31 @@ public class Rocket : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.CompareTag("Player") || (collision.gameObject.CompareTag("Asteroid")))
+        string collisionTag = collision.gameObject.tag;
+        if(collisionTag.Equals("Enemy"))
         {
+            return;
+        }
+
+        Planet planet = collision.gameObject.GetComponent<Planet>();
+
+        if (planet == null)
+        {
+            planet = collision.gameObject.GetComponentInParent<Planet>();
+        }
+
+        if(planet == null && collision.gameObject.CompareTag("Asteroid"))
+        {
+            Asteroid asteroid = collision.gameObject.GetComponent<Asteroid>();
+            if(asteroid != null)
+            {
+                planet = asteroid.orbit_target;
+            }
+        }
+
+        if(planet != null) //TODO:: Change if we have multiple players
+        {
+            planet.Damage(this.Damage);
             Destroy(gameObject);
         }
     }
