@@ -20,6 +20,7 @@ public class EnemyPlanet : Planet
 
     void Start ()
     {
+        MsgRelay.EventGameComplete += OnGameComplete;
         fireTimer = Random.Range(FireTimerMin, FireTimerMax);
         initialZPos = transform.position.z;
     }
@@ -68,5 +69,10 @@ public class EnemyPlanet : Planet
         //Make new projectile that fires from this planet's position   
         GameObject projectile = (GameObject)Instantiate(Projectile, transform.position + Random.insideUnitSphere * 3.0f, Quaternion.identity); //TODO:: Add offset positions
         projectile.SetActive(true);
+    }
+
+    private void OnGameComplete()
+    {
+        Destroy(gameObject);
     }
 }
