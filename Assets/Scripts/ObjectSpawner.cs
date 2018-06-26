@@ -19,6 +19,15 @@ public class ObjectSpawner : MonoBehaviour {
 
     // Update is called once per frame
 
+    // void projectileDirection() {
+    //     var heading = (Player?)transform.position - (Missle?)transform.position;
+    //     need to do something here to get the radius of the sphere maybe?
+
+    //     var distance = heading.magnitude;
+    //     var direction = heading / distance; // This is now the normalized direction.
+
+    // }
+
     void ResetTimer()
     {
         tilNextSpawn = spawnInterval + Random.Range(-randomness, randomness);
@@ -29,6 +38,16 @@ public class ObjectSpawner : MonoBehaviour {
         var go = (GameObject)Instantiate(toSpawn, transform.position + Random.insideUnitSphere * spawnPointRandomness, Quaternion.identity);
         go.transform.rotation = Quaternion.LookRotation(go.transform.position - transform.position);
     }
+
+    // public void Spawn()
+    // {
+    //     var go = (GameObject)Instantiate(toSpawn);
+    //     var heading = go.transform.position - transform.position;
+    //     var distance = heading.magnitude;
+    //     var direction = heading / distance;
+    //     // go.transform.rotation = Quaternion.LookRotation(direction);
+    //     go.transform.rotation = LookRotation(direction);
+    // }
 
     float tilNextSpawn;
 	void Update () {

@@ -64,10 +64,25 @@ public class EnemyPlanet : MonoBehaviour
         }
     }
 
-    void Fire()
+    // void Fire()
+    // {
+    //     //Make new projectile that fires from this planet's position   
+    //     GameObject projectile = (GameObject)Instantiate(Projectile, transform.position + Random.insideUnitSphere * 3.0f, Quaternion.identity); //TODO:: Add offset positions
+    //     Debug.Log(projectile);
+    //     projectile.SetActive(true);
+    // }
+
+        void Fire()
     {
-        //Make new projectile that fires from this planet's position   
-        GameObject projectile = (GameObject)Instantiate(Projectile, transform.position + Random.insideUnitSphere * 3.0f, Quaternion.identity); //TODO:: Add offset positions
+        // grab the player object
+        var player =  GameObject.Find("Test-Planet-With-Move").transform.position;
+        // get a vector that points from the enemy to the player
+        var heading = player - transform.position;
+        //Make new projectile that fires from this planet's position (its coming out of the wall)
+        GameObject projectile = (GameObject)Instantiate(Projectile, heading, Quaternion.identity); //TODO:: Add offset positions
+        Debug.Log(projectile);
+        Debug.Log("player: " + player);
+        Debug.Log("enemy: " + transform.position);
         projectile.SetActive(true);
     }
 
