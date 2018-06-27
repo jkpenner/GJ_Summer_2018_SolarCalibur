@@ -10,19 +10,21 @@ public class EnemyPlanet : Planet
     public float MaxSpeed = 6.0f;       //The max speed this enemy planet can move
     public float MoveDistanceMax = 1.8f;       //The max move distance this planet is allowed to move in either direction
     public bool CanMove = false;
-    //TODO:: Add player object here so enemy can target the player
 
     private float fireTimer;    //The timer that gets reset after this enemy fires at their target
     private float timeTilChangeDirection;
     private float timer;
     private Vector3 moveDirection;
     private float initialZPos;
+    private GameObject target;
 
     void Start ()
     {
         MsgRelay.EventGameComplete += OnGameComplete;
         fireTimer = Random.Range(FireTimerMin, FireTimerMax);
         initialZPos = transform.position.z;
+        target = GameObject.FindGameObjectWithTag("Player");
+        RotateTowardsTarget();
     }
 	
 	void Update ()
@@ -62,13 +64,32 @@ public class EnemyPlanet : Planet
                 transform.localPosition = new Vector3(new_x, 0f, initialZPos);
             }
         }
+
+        RotateTowardsTarget();
+    }
+
+    void RotateTowardsTarget()
+    {
+        if (target != null)
+        {
+            float step = 1.0f * Time.deltaTime;
+            Vector3 newDir = Vector3.RotateTowards(transform.forward, target.transform.position, step, 0.0f);
+            transform.rotation = Quaternion.LookRotation(newDir);
+        }
     }
 
     void Fire()
     {
-        //Make new projectile that fires from this planet's position   
-        GameObject projectile = (GameObject)Instantiate(Projectile, transform.position + Random.insideUnitSphere * 3.0f, Quaternion.identity); //TODO:: Add offset positions
-        projectile.SetActive(true);
+        if(target != null)
+        {
+            //Make new projectile that fires from just outside the planet's radius
+            Vector3 dir = (target.transform.position - transform.position).normalized;
+            SphereCollider collider = transform.GetChild(0).GetComponent<SphereCollider>();
+            Vector3 spawnPos = transform.position + (dir * collider.radius);
+            Quaternion rotation = Quaternion.LookRotation(spawnPos - transform.position);
+            GameObject projectile = (GameObject)Instantiate(Projectile, spawnPos, rotation);
+            projectile.SetActive(true);
+        }
     }
 
     private void OnGameComplete()

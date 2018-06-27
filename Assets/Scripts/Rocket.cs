@@ -2,56 +2,68 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Rocket : MonoBehaviour
+public class Rocket : Projectile
 {
     public Transform target;
-    public float accel;
-    public float turnSpeed;
-    public float lifeSpan;
-    public int Damage;
+    public float TurnSpeed;
+    public float LifeSpan;
+    [Range(0.0f, 1.0f)]
+    public float HomingChance;
+
+    private bool IsHoming;
 
     // Use this for initialization
-    void Start ()
+    public override void Start()
     {
         target = GameObject.FindGameObjectWithTag("Player").transform;
-	}
+        base.Start();
+
+        IsHoming = false;
+
+        //If we're not a homing missile, we go the max speed
+        if (Random.Range(0.0f, 1.0f) <= HomingChance)
+        {
+            IsHoming = true;
+        }
+        else
+        {
+            SetVelocity(SpeedMax);
+        }
+    }
 
 	// Update is called once per frame
 	void FixedUpdate ()
     {
         if (target != null)
         {
-            lifeSpan -= Time.fixedDeltaTime;
+            LifeSpan -= Time.fixedDeltaTime;
 
-            if (lifeSpan <= 0f)
+            if (LifeSpan <= 0f)
             {
                 Destroy(gameObject);
             }
 
-            //If the rocket is behind the target destroy
-            Vector3 dir = (transform.position - target.position).normalized;
-            float dotResult = Vector3.Dot(dir, target.forward);
-
-            if (dotResult < 0)
+            if(IsHoming)
             {
-                Destroy(gameObject);
+                RotateTowardsTarget();
+
+                if (m_RigidBody != null)
+                {
+                    m_RigidBody.velocity = transform.forward * m_Speed;
+                }
             }
-
-            accel += Time.fixedDeltaTime;
-
-            transform.Translate(Vector3.forward * accel * Time.fixedDeltaTime, transform);
-
-            Vector3 targetDir = target.position - transform.position;
-            // The step size is equal to speed times frame time.
-            float step = turnSpeed * Time.fixedDeltaTime;
-            Vector3 newDir = Vector3.RotateTowards(transform.forward, targetDir, step, 0.0f);
-            Debug.DrawRay(transform.position, newDir, Color.red);
-            // Move our position a step closer to the target.
-            transform.rotation = Quaternion.LookRotation(newDir);
         }
     }
 
-    void OnCollisionEnter(Collision collision)
+    void RotateTowardsTarget()
+    {
+        if (target != null)
+        {
+            transform.LookAt(target.transform);
+        }
+    }
+
+    public override void OnCollisionEnter(Collision collision)
     {
         string collisionTag = collision.gameObject.tag;
         if(collisionTag.Equals("Enemy"))
