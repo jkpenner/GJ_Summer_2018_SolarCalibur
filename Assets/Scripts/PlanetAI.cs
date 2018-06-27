@@ -16,12 +16,14 @@ public class PlanetAI : MonoBehaviour
     private bool RIGHT = true;
     private bool LEFT = false;
     private bool direction;
+    private int axis;
     private float maxMove;
     private bool wait;
 
     void Start ()
     {
         direction = LEFT;
+        axis = 0;
         UpdateMoveVars();
         FireTimer = Random.Range(FireTimerMin, FireTimerMax);
     }
@@ -31,7 +33,14 @@ public class PlanetAI : MonoBehaviour
         MoveTimer -= Time.deltaTime;
 
         if (!wait) Move();
-        if (Mathf.Abs(transform.position.x) >= MaxMove) direction = !direction;
+        float position;
+        switch (axis)
+        {
+            case 0: position = transform.position.x; break;
+            default: position = transform.position.z; break;
+        }
+
+        if (Mathf.Abs(position) >= MaxMove) direction = !direction;
         if (MoveTimer <= 0.0f) UpdateMoveVars();
 
         FireTimer -= Time.deltaTime;
@@ -48,13 +57,20 @@ public class PlanetAI : MonoBehaviour
 	{
         float speed = .1f; 
         if (!direction) speed = -speed;
-        transform.position += transform.right * speed;
+        Vector3 transformDir;
+        switch (axis)
+        {
+            case 0: transformDir = transform.right; break;
+            default: transformDir = transform.forward; break;
+        }
+        transform.position += transformDir * speed;
 	}
 
     void UpdateMoveVars()
     {
         MoveTimer = Random.Range(.5f, 2f);
         direction = !direction;
+        axis = Random.Range(0, 1);
         wait = Random.value > 0.5f;
     }
 
