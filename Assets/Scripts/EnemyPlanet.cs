@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyPlanet : MonoBehaviour
+public class EnemyPlanet : Planet
 {
     public GameObject Projectile;     //The object this planet will fire at the Player
     public float FireTimerMin = 1.5f; //The min time this enemy planet will take before firing it's next shot
@@ -10,7 +10,6 @@ public class EnemyPlanet : MonoBehaviour
     public float MaxSpeed = 6.0f;       //The max speed this enemy planet can move
     public float MoveDistanceMax = 1.8f;       //The max move distance this planet is allowed to move in either direction
     public bool CanMove = false;
-    public float Health = 100;
     //TODO:: Add player object here so enemy can target the player
 
     private float fireTimer;    //The timer that gets reset after this enemy fires at their target
@@ -21,6 +20,7 @@ public class EnemyPlanet : MonoBehaviour
 
     void Start ()
     {
+        MsgRelay.EventGameComplete += OnGameComplete;
         fireTimer = Random.Range(FireTimerMin, FireTimerMax);
         initialZPos = transform.position.z;
     }
@@ -86,12 +86,8 @@ public class EnemyPlanet : MonoBehaviour
         projectile.SetActive(true);
     }
 
-    void OnCollisionEnter(Collision collision)
+    private void OnGameComplete()
     {
-        Asteroid asteroid = collision.gameObject.GetComponent<Asteroid>();
-        if (asteroid != null)
-        {
-            //Health -= asteroid.Damage;
-        }
+        Destroy(gameObject);
     }
 }

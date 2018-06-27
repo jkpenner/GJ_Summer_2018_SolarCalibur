@@ -5,18 +5,19 @@ using UnityEngine;
 public class Asteroid : MonoBehaviour {
     public event System.Action<Asteroid> EventLaunched;
     public event System.Action<Asteroid> EventReturned;
+    public event System.Action<Asteroid, Planet> EventCollided;
 
     [Header("Setup")]
     public RectTransform targeting;
     public new Rigidbody rigidbody;
-
+    public int Damage;
 
     [Header("Orbit")]
     public float orbit_speed = 6f;
     public float orbit_radius = 1f;
 
     [HideInInspector] // Assigned by PlanetController
-    public Transform orbit_target;
+    public Planet orbit_target;
     [HideInInspector] // Assigned by PlanetController
     public float orbit_angle = 0f;
     [HideInInspector] // Assigned by PlanetController
@@ -41,6 +42,8 @@ public class Asteroid : MonoBehaviour {
     private bool isReturning = false;
     private float returningPercent = 0f;
 
+
+
     public bool IsOrbitting { get { return isOrbitting; } }
 
     public float OrbitSpeed {
@@ -56,7 +59,7 @@ public class Asteroid : MonoBehaviour {
         get {
             Vector3 toPosition = new Vector3(Mathf.Cos(orbit_angle), 0f, Mathf.Sin(orbit_angle));
             if (orbit_target != null) {
-                return orbit_target.position + (toPosition * OrbitRadius);
+                return orbit_target.transform.position + (toPosition * OrbitRadius);
             }
             return toPosition * OrbitRadius;
         }
@@ -67,6 +70,16 @@ public class Asteroid : MonoBehaviour {
 
         isReturning = true;
         returningPercent = 1f;
+
+        var planet = collision.gameObject.GetComponent<Planet>();
+        if (planet == null) {
+            planet = collision.gameObject.GetComponentInParent<Planet>();
+        }
+
+        if (planet != null && EventCollided != null)
+        {
+            EventCollided.Invoke(this, planet);
+        }
     }
 
     private void Awake() {
@@ -79,7 +92,14 @@ public class Asteroid : MonoBehaviour {
     }
 
 
-    public void Update() {
+    public void FixedUpdate() {
+        
+        if(orbit_target == null || orbit_target.IsAlive == false)
+        {
+            return;
+            //Destroy(this); //TODO:: put in a better place
+
+        }
 
         targeting.gameObject.SetActive(isActive && isOrbitting);
 
@@ -106,7 +126,7 @@ public class Asteroid : MonoBehaviour {
             Vector3 forward = Vector3.Cross(toPosition, Vector3.up) * orbit_direction;
 
             // Update the rigidbody's position and rotation values
-            rigidbody.MovePosition(orbit_target.position + (toPosition * OrbitRadius));
+            rigidbody.MovePosition(orbit_target.transform.position + (toPosition * OrbitRadius));
             rigidbody.MoveRotation(Quaternion.LookRotation(forward));
         } else {
 
@@ -153,10 +173,16 @@ public class Asteroid : MonoBehaviour {
         if (isReturning) return;
 
         if (Vector3.Distance(this.rigidbody.position, TargetOrbitPosition) > return_distance) {
-            Debug.Log("Returning");
-            isReturning = true;
-            StartCoroutine(StartReturning(1f));
+            StartReturn();
         }
+    }
+
+    public void StartReturn() {
+        if (isReturning) return;
+
+        isReturning = true;
+        isOrbitting = false;
+        StartCoroutine(StartReturning(1f));
     }
 
     private IEnumerator StartReturning(float transition_time) {

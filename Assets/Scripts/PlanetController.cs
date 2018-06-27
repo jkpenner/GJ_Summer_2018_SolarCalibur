@@ -1,14 +1,21 @@
-﻿using System;
+﻿#define HANDLE_OWN_MOVEMENT
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Planet))]
 public class PlanetController : MonoBehaviour {
+    private Planet _planet;
+
     [Header("Movement")]
     [SerializeField]
     private float moveSpeed = 5f;
     [SerializeField]
-    private float moveDistanceMax = 1.8f;
+    public Transform moveTarget;
+    [SerializeField]
+    public float distanceFromMoveTarget = 10f;
 
     [Header("Asteroids")]
     [SerializeField]
@@ -19,75 +26,176 @@ public class PlanetController : MonoBehaviour {
     // List containing all asteroids controlled by this planet
     private List<Asteroid> asteroids;
 
-    // Queue of asteroids available to be launched
-    private Queue<Asteroid> asteroidQueue;
+    // Linked List containing the asteroids that can be launched
+    private LinkedList<Asteroid> asteroidQueue;
 
     void Start() {
+        // Setup event liseners on the planet being controlled
+        _planet = GetComponent<Planet>();
+        _planet.EventTargetChanged += OnTargetChanged;
+        // Setup trigger the OnTargetChange if there is already a target
+        if (_planet.TargetPlanet != null) {
+            OnTargetChanged(_planet.TargetPlanet);
+        }
+
         asteroids = new List<Asteroid>();
-        asteroidQueue = new Queue<Asteroid>();
+        //asteroidQueue = new Queue<Asteroid>();
+        asteroidQueue = new LinkedList<Asteroid>();
+
+        // Spawn asteroids evenly spaced around the planet with random orbit directions.
         for (int i = 0; i < asteroidCount; i++) {
-            asteroids.Add(Instantiate(asteroidPrefab));
-            asteroids[i].orbit_target = this.transform;
-            asteroids[i].orbit_angle = ((float)i / asteroidCount) * 360f;
-            //asteroids[i].orbit_radius = 1f;
-            asteroids[i].orbit_direction = UnityEngine.Random.Range(0, 2) == 0 ? 1 : -1;
+            var asteroid = SpawnAsteroid(asteroidPrefab);
+            asteroid.orbit_direction = UnityEngine.Random.Range(0, 2) == 0 ? 1 : -1;
+            asteroid.orbit_angle = ((float)i / asteroidCount) * 360f;
+            // Setup the asteroid's parent
+            asteroid.orbit_target = _planet;
 
-            //asteroids[i].transform.SetParent(this.transform, false);
-            asteroids[i].EventLaunched += OnAsteroidLauncehd;
-            asteroids[i].EventReturned += OnAsteroidReturned;
+        }
+        UpdateActiveAsteroid();
+    }
 
+    private void OnTargetChanged(Planet newTarget) {
+        this.moveTarget = newTarget.transform;
+    }
 
-            asteroidQueue.Enqueue(asteroids[i]);
+    /// <summary>
+    /// Moves the planet around the its target by its move speed.
+    /// </summary>
+    /// <param name="input">Range [-1.0, 1.0]</param>
+    public void MoveAroundTarget(float input) {
+        if (moveTarget != null) {
+            // Snap the planet to the correct distance from the target
+            if (Vector3.Distance(moveTarget.transform.position, transform.position) != distanceFromMoveTarget) {
+                Vector3 fromTarget = (transform.position - moveTarget.transform.position).normalized;
+                transform.position = moveTarget.transform.position + (fromTarget * distanceFromMoveTarget);
+            }
+
+            // Calculate the degree of movment around the target, based on distance
+            float rotateAmount = (-Mathf.Clamp(input, -1f, 1f) * moveSpeed * Time.deltaTime)
+                / (2.0f * Mathf.PI * distanceFromMoveTarget) * 360f;
+
+            // Rotate the planet around the target's position
+            transform.RotateAround(moveTarget.transform.position, Vector3.up, rotateAmount);
+            transform.rotation = Quaternion.LookRotation((moveTarget.position - transform.position).normalized);
         }
     }
 
-    private void OnAsteroidLauncehd(Asteroid asteroid) {
+    /// <summary>
+    /// Spawns an asteroid and sets up all required values and listeners
+    /// </summary>
+    public Asteroid SpawnAsteroid(Asteroid prefab) {
+        var new_asteroid = Instantiate(asteroidPrefab);
+
+        // Setup lisenters for the asteroid's event
+        new_asteroid.EventLaunched += OnAsteroidLaunched;
+        new_asteroid.EventReturned += OnAsteroidReturned;
+        new_asteroid.EventCollided += OnAsteroidCollided;
+
+        asteroids.Add(new_asteroid);
+        //asteroidQueue.Enqueue(new_asteroid);
+        asteroidQueue.AddLast(new_asteroid);
+        return new_asteroid;
+    }
+
+    /// <summary>
+    /// Destroys an asteroid owned by this planet.
+    /// </summary>
+    public void DestroyAsteroid(Asteroid instance) {
+        if (asteroids.Contains(instance)) {
+            instance.EventLaunched -= OnAsteroidLaunched;
+            instance.EventReturned -= OnAsteroidReturned;
+            instance.EventCollided -= OnAsteroidCollided;
+
+            asteroids.Remove(instance);
+            asteroidQueue.Remove(instance);
+
+            Destroy(instance.gameObject);
+        }
+    }
+
+    /// <summary>
+    /// Start charging for the nex launch attack
+    /// </summary>
+    public void StartCharge() {
+        if (asteroidQueue.Count > 0) {
+            asteroidQueue.First.Value.StartCharge();
+        }
+    }
+
+    /// <summary>
+    /// Launch the first available asteroid from the planet
+    /// </summary>
+    public void LaunchAttack() {
+        if (asteroidQueue.Count > 0) {
+            var asteroid = asteroidQueue.First.Value;
+
+            asteroidQueue.RemoveFirst();
+
+            asteroid.Launch();
+            UpdateActiveAsteroid();
+        }
+    }
+
+    /// <summary>
+    /// Call when the asteroid queue is modified
+    /// </summary>
+    private void UpdateActiveAsteroid() {
+        if (asteroidQueue.Count > 0) {
+            asteroidQueue.First.Value.isActive = true;
+        }
+    }
+
+    /// <summary>
+    /// Is Triggered when one of the planet's asteroids is launched
+    /// </summary>
+    /// <param name="asteroid"></param>
+    private void OnAsteroidLaunched(Asteroid asteroid) {
         asteroid.isActive = false;
     }
 
+    /// <summary>
+    /// Is Triggered when one of the planet's asteroids returns to orbit
+    /// </summary>
     private void OnAsteroidReturned(Asteroid asteroid) {
-        asteroidQueue.Enqueue(asteroid);
+        asteroidQueue.AddLast(asteroid);
+        UpdateActiveAsteroid();
     }
 
-    void Update() {
-        Vector3 input = new Vector3(Input.GetAxis("Horizontal"), 0f, 0f);
-        transform.localPosition += input * moveSpeed * Time.deltaTime;
-        if (Mathf.Abs(transform.localPosition.x) > moveDistanceMax && moveDistanceMax > 0f)
-        {
-            float new_x = (transform.localPosition.x >= 0 ? 1 : -1) * moveDistanceMax;
+    /// <summary>
+    /// Is Triggered when one of the planet's asteroids collides with another object
+    /// </summary>
+    private void OnAsteroidCollided(Asteroid asteroid, Planet hitPlanet) {
+        StartCoroutine(TeleportAsteroid(asteroid));
 
-            transform.localPosition = new Vector3(new_x, 0f, 0f);
+        if (hitPlanet != null) {
+            Debug.LogFormat("[{0}] Hit {1}", this.name, hitPlanet.name);
+
+            hitPlanet.Damage(asteroid.Damage);
+
+        } else {
+            Debug.LogFormat("[{0}] Hit something that was not a planet");
         }
 
-        if (asteroidQueue.Count > 0) {
-            asteroidQueue.Peek().isActive = true;
-        }
-
-        if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space)) {
-            if (asteroidQueue.Count > 0) {
-                asteroidQueue.Peek().StartCharge();
-            }
-        }
-
-        if (Input.GetMouseButtonUp(0) || Input.GetKeyUp(KeyCode.Space)) {
-            if (asteroidQueue.Count > 0) {
-                asteroidQueue.Dequeue().Launch();
-            }
-
-
-
-            //ShootAvalibleAsteroid();
-        }
     }
 
-    private void ShootAvalibleAsteroid() {
-        for (int i = 0; i < asteroids.Count; i++) {
-            if (asteroids[i].IsOrbitting)
-                continue;
+    private IEnumerator TeleportAsteroid(Asteroid asteroid) {
+        var lr = asteroid.GetComponent<LineRenderer>();
+        if (lr != null) lr.enabled = false;
 
-            asteroids[i].isActive = false;
-            asteroids[i].Launch();
-            break;
-        }
+        asteroid.gameObject.SetActive(false);
+        asteroid.orbit_direction = UnityEngine.Random.Range(0, 2) == 0 ? 1 : -1;
+
+
+        float angle_offset = Vector3.Angle(Vector3.right, transform.right);
+        asteroid.orbit_angle = asteroid.orbit_direction == 1 ? angle_offset : angle_offset + 180f;
+
+
+
+        yield return new WaitForSeconds(1f);
+
+        asteroid.transform.position = transform.position - (transform.forward * asteroid.return_distance);
+        if (lr != null) lr.enabled = true;
+        asteroid.gameObject.SetActive(true);
+        asteroid.StartReturn();
     }
 }
