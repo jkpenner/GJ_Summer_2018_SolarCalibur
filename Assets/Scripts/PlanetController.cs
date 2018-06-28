@@ -56,7 +56,9 @@ public class PlanetController : MonoBehaviour {
 
     private void OnDestroy() {
         foreach (var a in asteroids) {
-            Destroy(a.gameObject);
+            if (a != null) {
+                Destroy(a.gameObject);
+            }
         }
     }
 
