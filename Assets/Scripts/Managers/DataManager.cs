@@ -52,6 +52,30 @@ public class DataManager : Singleton<DataManager> {
         }
     }
 
+    static public int LevelCount {
+        get {
+            if (Exists && Instance._levelDatabase != null) {
+                return Instance._levelDatabase.levelAssets.Length;
+            }
+            return 0;
+        }
+    }
+
+    static public void MoveToNextLevel() {
+        if (Exists) {
+            Instance._activeLevelIndex += 1;
+            // Check if the next level index does not exist
+            if (Instance._activeLevelIndex >= Instance._levelDatabase.levelAssets.Length) {
+                Instance._activeLevelIndex = -1;
+            }
+        }
+    }
+
+    static public void SetToFirstLevel() {
+        if (Exists) {
+            Instance._activeLevelIndex = 0;
+        }
+    }
 
     private void Awake() {
         if (IsActiveInstance == false) {
@@ -63,9 +87,5 @@ public class DataManager : Singleton<DataManager> {
         _levelDatabase = Resources.Load<LevelDBAsset>("LevelDatabase");
 
         _activeLevelIndex = initialLevelIndex;
-    }
-
-    public void LoadCurrentLevel(Action<AsyncOperation> callback) {
-
     }
 }

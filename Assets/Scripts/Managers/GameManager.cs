@@ -79,6 +79,14 @@ public class GameManager : Singleton<GameManager> {
             Instance.InternalTogglePause();
         }
     }
+
+    static public void MoveToNextLevel() {
+        if (Exists) {
+            Instance.InternalMoveToNextLevel();
+        }
+    }
+
+
     #endregion
 
     private void Awake() {
@@ -169,13 +177,13 @@ public class GameManager : Singleton<GameManager> {
 
         InternalCompleteGame();
 
-        StartCoroutine(ReloadScene());
+        // Temp Code: Move To Next should be call by ui
+        StartCoroutine(TestMoveToNext());
     }
 
-    public IEnumerator ReloadScene() {
+    public IEnumerator TestMoveToNext() {
         yield return new WaitForSeconds(1f);
-        // Temp Code
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        GameManager.MoveToNextLevel();
     }
 
     private void InternalStartGame() {
@@ -204,5 +212,26 @@ public class GameManager : Singleton<GameManager> {
             MsgRelay.TriggerGamePause();
         else
             MsgRelay.TriggerGameResume();
+    }
+
+    private void InternalMoveToNextLevel() {
+        if (DataManager.Exists) {
+            var ao = SceneManager.UnloadSceneAsync(
+                DataManager.ActiveLevelAsset.sceneName);
+            ao.completed += OnPlanetSceneUnloaded;
+        }
+    }
+
+    private void OnPlanetSceneUnloaded(AsyncOperation obj) {
+        DataManager.MoveToNextLevel();
+
+        if (DataManager.ActiveLevelAsset != null) {
+            var ao = SceneManager.LoadSceneAsync(
+                DataManager.ActiveLevelAsset.sceneName,
+                LoadSceneMode.Additive);
+            ao.completed += OnPlanetSceneLoaded;
+        } else {
+            SceneManager.LoadSceneAsync("MainMenu");
+        }
     }
 }
