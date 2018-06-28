@@ -18,6 +18,7 @@ public class MsgRelay : Singleton<MsgRelay> {
     private event System.Action _eventGamePause;
     private event System.Action _eventGameResume;
     private event System.Action _eventGameComplete;
+    private event System.Action _eventGameSceneLoaded;
 
     /// <summary>
     /// Triggers when the game logic should start
@@ -49,6 +50,14 @@ public class MsgRelay : Singleton<MsgRelay> {
     static public event System.Action EventGameComplete {
         add { Instance._eventGameComplete += value; }
         remove { Instance._eventGameComplete -= value; }
+    }
+
+    /// <summary>
+    /// Triggers when the game is complete. End of a fight
+    /// </summary>
+    static public event System.Action EventGameSceneLoaded {
+        add { Instance._eventGameSceneLoaded += value; }
+        remove { Instance._eventGameSceneLoaded -= value; }
     }
 
     static public void TriggerGameStart() {
@@ -88,6 +97,16 @@ public class MsgRelay : Singleton<MsgRelay> {
 
         if (Exists && Instance._eventGameComplete != null) {
             Instance._eventGameComplete.Invoke();
+        }
+    }
+
+    static public void TriggerGameSceneLoaded() {
+#if SHOW_DEBUG_LOGS
+        Debug.Log("Game Scene Loaded Triggered");
+#endif
+
+        if (Exists && Instance._eventGameSceneLoaded != null) {
+            Instance._eventGameSceneLoaded.Invoke();
         }
     }
     #endregion
