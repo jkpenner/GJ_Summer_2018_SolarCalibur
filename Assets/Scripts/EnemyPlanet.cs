@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyPlanet : Planet
-{
+public class EnemyPlanet : Planet {
     public GameObject Projectile;     //The object this planet will fire at the Player
     public float FireTimerMin = 1.5f; //The min time this enemy planet will take before firing it's next shot
     public float FireTimerMax = 5.0f; //The max time this enemy planet will take before firing it's next shot
@@ -18,33 +17,33 @@ public class EnemyPlanet : Planet
     private float initialZPos;
     private GameObject target;
 
-    void Start ()
-    {
+    void Start() {
         MsgRelay.EventGameComplete += OnGameComplete;
         fireTimer = Random.Range(FireTimerMin, FireTimerMax);
         initialZPos = transform.position.z;
         target = GameObject.FindGameObjectWithTag("Player");
         RotateTowardsTarget();
     }
-	
-	void Update ()
-    {
+
+    private void OnDestroy() {
+        if (MsgRelay.Exists) {
+            MsgRelay.EventGameComplete -= OnGameComplete;
+        }
+    }
+
+    void Update() {
         fireTimer -= Time.deltaTime;
 
         //Once the fire timer hits zero, fire the asteroid and reset the timer
-        if (fireTimer <= 0.0f)
-        {
+        if (fireTimer <= 0.0f) {
             Fire();
             fireTimer = Random.Range(FireTimerMin, FireTimerMax);
         }
     }
 
-    void FixedUpdate()
-    {
-        if (CanMove && Time.time > 0)
-        {
-            if (Time.time > timeTilChangeDirection + timer)
-            {
+    void FixedUpdate() {
+        if (CanMove && Time.time > 0) {
+            if (Time.time > timeTilChangeDirection + timer) {
                 timer = Time.time;
                 moveDirection = Random.insideUnitSphere.normalized;
                 //Enemy can only move in x direction
@@ -57,8 +56,7 @@ public class EnemyPlanet : Planet
 
             transform.Translate(moveDirection * speed * Time.fixedDeltaTime);
 
-            if (Mathf.Abs(transform.localPosition.x) > MoveDistanceMax && MoveDistanceMax > 0f)
-            {
+            if (Mathf.Abs(transform.localPosition.x) > MoveDistanceMax && MoveDistanceMax > 0f) {
                 float new_x = (transform.localPosition.x >= 0 ? 1 : -1) * MoveDistanceMax;
 
                 transform.localPosition = new Vector3(new_x, 0f, initialZPos);
@@ -68,20 +66,16 @@ public class EnemyPlanet : Planet
         RotateTowardsTarget();
     }
 
-    void RotateTowardsTarget()
-    {
-        if (target != null)
-        {
+    void RotateTowardsTarget() {
+        if (target != null) {
             float step = 1.0f * Time.deltaTime;
             Vector3 newDir = Vector3.RotateTowards(transform.forward, target.transform.position, step, 0.0f);
             transform.rotation = Quaternion.LookRotation(newDir);
         }
     }
 
-    void Fire()
-    {
-        if(target != null)
-        {
+    void Fire() {
+        if (target != null) {
             //Make new projectile that fires from just outside the planet's radius
             Vector3 dir = (target.transform.position - transform.position).normalized;
             SphereCollider collider = transform.GetChild(0).GetComponent<SphereCollider>();
@@ -92,8 +86,7 @@ public class EnemyPlanet : Planet
         }
     }
 
-    private void OnGameComplete()
-    {
+    private void OnGameComplete() {
         Destroy(gameObject);
     }
 }
