@@ -13,6 +13,7 @@ public class GameManager : Singleton<GameManager> {
 
     // Temp add a bit of delay for loading screen
     private float load_delay = 1f;
+    private float game_complete_delay = 1f;
 
     //[Header("Player Spawn Info")]
     //[SerializeField]
@@ -205,6 +206,11 @@ public class GameManager : Singleton<GameManager> {
     }
 
     private void InternalCompleteGame() {
+        StartCoroutine(DelayedCompleteGame(game_complete_delay));
+    }
+
+    public IEnumerator DelayedCompleteGame(float time) {
+        yield return new WaitForSeconds(time);
         if (_isGameActive == true) {
             _isGameActive = false;
             MsgRelay.TriggerGameComplete();
