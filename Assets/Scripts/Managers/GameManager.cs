@@ -11,6 +11,9 @@ public class GameManager : Singleton<GameManager> {
     private Planet playerPlanet;
     private Planet enemyPlanet;
 
+    // Temp add a bit of delay for loading screen
+    private float load_delay = 1f;
+
     //[Header("Player Spawn Info")]
     //[SerializeField]
     //private Planet playerPlanetPrefab = null;
@@ -109,6 +112,11 @@ public class GameManager : Singleton<GameManager> {
     }
 
     private void OnPlanetSceneLoaded(AsyncOperation obj) {
+        StartCoroutine(DelayStartGame(load_delay));
+    }
+
+    private IEnumerator DelayStartGame(float time) {
+        yield return new WaitForSeconds(time);
         MsgRelay.TriggerGameSceneLoaded();
 
         SpawnPlanets(DataManager.PlayerPlanetPrefab,
