@@ -90,6 +90,12 @@ public class GameManager : Singleton<GameManager> {
         }
     }
 
+    static public void RestartCurrentLevel() {
+        if (Exists) {
+            Instance.InternalRestartCurrentLevel();
+        }
+    }
+
 
     #endregion
 
@@ -187,7 +193,7 @@ public class GameManager : Singleton<GameManager> {
         InternalCompleteGame();
 
         // Temp Code: Move To Next should be call by ui
-        StartCoroutine(TestMoveToNext());
+        //StartCoroutine(TestMoveToNext());
     }
 
     public IEnumerator TestMoveToNext() {
@@ -232,13 +238,30 @@ public class GameManager : Singleton<GameManager> {
         if (DataManager.Exists) {
             var ao = SceneManager.UnloadSceneAsync(
                 DataManager.ActiveLevelAsset.sceneName);
-            ao.completed += OnPlanetSceneUnloaded;
+            ao.completed += (op) =>
+            {
+                MsgRelay.TriggerGameSceneUnloaded();
+
+                DataManager.MoveToNextLevel();
+                LoadActiveScene();
+            };
         }
     }
 
-    private void OnPlanetSceneUnloaded(AsyncOperation obj) {
-        DataManager.MoveToNextLevel();
+    private void InternalRestartCurrentLevel() {
+        if (DataManager.Exists) {
+            var ao = SceneManager.UnloadSceneAsync(
+                DataManager.ActiveLevelAsset.sceneName);
+            ao.completed += (op) =>
+            {
+                MsgRelay.TriggerGameSceneUnloaded();
 
+                LoadActiveScene();
+            };
+        }
+    }
+
+    private void LoadActiveScene() {
         if (DataManager.ActiveLevelAsset != null) {
             var ao = SceneManager.LoadSceneAsync(
                 DataManager.ActiveLevelAsset.sceneName,

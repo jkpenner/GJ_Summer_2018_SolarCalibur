@@ -4,25 +4,27 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class UILoadingScreen : MonoBehaviour {
+    public GameObject content;
+
     private void OnEnable() {
         if (MsgRelay.Exists) {
-            MsgRelay.EventGameStart += OnGameStart;
-            MsgRelay.EventGameComplete += OnGameComplete;
+            MsgRelay.EventGameSceneLoaded += OnGameSceneLoaded;
+            MsgRelay.EventGameSceneUnloaded += OnGameSceneUnloaded;
         }
     }
 
     private void OnDisable() {
         if (MsgRelay.Exists) {
-            MsgRelay.EventGameStart -= OnGameStart;
-            MsgRelay.EventGameComplete -= OnGameComplete;
+            MsgRelay.EventGameStart -= OnGameSceneLoaded;
+            MsgRelay.EventGameComplete -= OnGameSceneUnloaded;
         }
     }
 
-    private void OnGameStart() {
-        this.gameObject.SetActive(false);
+    private void OnGameSceneLoaded() {
+        content.gameObject.SetActive(false);
     }
 
-    public void OnGameComplete() {
-        this.gameObject.SetActive(true);
+    public void OnGameSceneUnloaded() {
+        content.gameObject.SetActive(true);
     }
 }
