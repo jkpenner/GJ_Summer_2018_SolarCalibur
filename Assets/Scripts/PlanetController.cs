@@ -54,6 +54,12 @@ public class PlanetController : MonoBehaviour {
         UpdateActiveAsteroid();
     }
 
+    private void OnDestroy() {
+        foreach (var a in asteroids) {
+            Destroy(a.gameObject);
+        }
+    }
+
     private void OnTargetChanged(Planet newTarget) {
         this.moveTarget = newTarget.transform;
     }
