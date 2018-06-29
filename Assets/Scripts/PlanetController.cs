@@ -11,11 +11,15 @@ public class PlanetController : MonoBehaviour {
 
     [Header("Movement")]
     [SerializeField]
-    private float moveSpeed = 5f;
+    private float speedMovement = 5f;
     [SerializeField]
     public Transform moveTarget;
     [SerializeField]
     public float distanceFromMoveTarget = 10f;
+
+    public float minDistanceToMove = 0.1f;
+
+    public float speedRotation = 45f;
 
     [Header("Asteroids")]
     [SerializeField]
@@ -71,21 +75,39 @@ public class PlanetController : MonoBehaviour {
     /// </summary>
     /// <param name="input">Range [-1.0, 1.0]</param>
     public void MoveAroundTarget(float input) {
-        if (moveTarget != null && input != 0.0f)
-        {
-            // Snap the planet to the correct distance from the target
-            if (Vector3.Distance(moveTarget.transform.position, transform.position) != distanceFromMoveTarget) {
-                Vector3 fromTarget = (transform.position - moveTarget.transform.position).normalized;
-                transform.position = moveTarget.transform.position + (fromTarget * distanceFromMoveTarget);
+        if (moveTarget != null) {
+            // Check if the planet is not at the right distance from the target
+            float distanceFromTarget = Vector3.Distance(moveTarget.position, transform.position);
+            if (Mathf.Abs(distanceFromTarget - distanceFromMoveTarget) >= minDistanceToMove) {
+                //Debug.Log("Moving");
+                Vector3 toTarget = (moveTarget.position - transform.position).normalized;
+                Vector3 targetPosition = moveTarget.position - (toTarget *
+                    (distanceFromMoveTarget + minDistanceToMove));
+
+                // Lerp towards the target's position
+                transform.position = Vector3.Lerp(transform.position,
+                    targetPosition, speedMovement * Time.deltaTime);
+
+                // Update the distanceFromTarget value
+                distanceFromTarget = Vector3.Distance(
+                    moveTarget.position, transform.position);
             }
 
             // Calculate the degree of movment around the target, based on distance
-            float rotateAmount = (-Mathf.Clamp(input, -1f, 1f) * moveSpeed * Time.deltaTime)
-                / (2.0f * Mathf.PI * distanceFromMoveTarget) * 360f;
+            float rotateAmount = (-Mathf.Clamp(input, -1f, 1f) * speedMovement * Time.deltaTime)
+                / (2.0f * Mathf.PI * distanceFromTarget) * 360f;
 
             // Rotate the planet around the target's position
             transform.RotateAround(moveTarget.transform.position, Vector3.up, rotateAmount);
-            transform.rotation = Quaternion.LookRotation((moveTarget.position - transform.position).normalized);
+
+            // Get the new target rotation towards the target
+            Quaternion targetRotation = Quaternion.LookRotation(
+                (moveTarget.position - transform.position).normalized);
+
+            // Slerp towards the new target rotation to give a bit of delay
+            transform.rotation = Quaternion.Slerp(
+                transform.rotation, targetRotation,
+                speedRotation * Time.deltaTime);
         }
     }
 
