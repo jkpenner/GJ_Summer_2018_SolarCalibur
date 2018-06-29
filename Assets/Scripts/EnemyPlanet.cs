@@ -10,6 +10,8 @@ public class EnemyPlanet : Planet
     public float MaxSpeed = 6.0f;       //The max speed this enemy planet can move
     public float MoveDistanceMax = 1.8f;       //The max move distance this planet is allowed to move in either direction
     public bool CanMove = false;
+    public float MaxMove = 3f;        //The maximum the enemy planet can move from center
+    //TODO:: Add player object here so enemy can target the player
 
     private float fireTimer;    //The timer that gets reset after this enemy fires at their target
     private float timeTilChangeDirection;
@@ -17,18 +19,56 @@ public class EnemyPlanet : Planet
     private Vector3 moveDirection;
     private float initialZPos;
     private GameObject target;
+    private float MoveTimer;
+    private bool RIGHT = true;
+    private bool LEFT = false;
+    private bool direction;
+    private int axis;
+    private float maxMove;
+    private bool wait;
 
     void Start ()
     {
+<<<<<<< HEAD
+=======
+        direction = LEFT;
+        axis = 0;
+        UpdateMoveVars();
+>>>>>>> master
         MsgRelay.EventGameComplete += OnGameComplete;
         fireTimer = Random.Range(FireTimerMin, FireTimerMax);
         initialZPos = transform.position.z;
         target = GameObject.FindGameObjectWithTag("Player");
         RotateTowardsTarget();
     }
+<<<<<<< HEAD
 	
 	void Update ()
     {
+=======
+
+    private void OnDestroy() {
+        if (MsgRelay.Exists) {
+            MsgRelay.EventGameComplete -= OnGameComplete;
+        }
+    }
+
+	void Update ()
+    {
+        MoveTimer -= Time.deltaTime;
+
+        if (!wait) Move();
+        float position;
+        switch (axis)
+        {
+            case 0: position = transform.position.x; break;
+            default: position = transform.position.z; break;
+        }
+
+        if (Mathf.Abs(position) >= MaxMove) direction = !direction;
+        if (MoveTimer <= 0.0f) UpdateMoveVars();
+
+>>>>>>> master
         fireTimer -= Time.deltaTime;
 
         //Once the fire timer hits zero, fire the asteroid and reset the timer
@@ -39,6 +79,30 @@ public class EnemyPlanet : Planet
         }
     }
 
+<<<<<<< HEAD
+=======
+    void Move()
+    {
+        float speed = .1f;
+        if (!direction) speed = -speed;
+        Vector3 transformDir;
+        switch (axis)
+        {
+            case 0: transformDir = transform.right; break;
+            default: transformDir = transform.forward; break;
+        }
+        transform.position += transformDir * speed;
+    }
+
+    void UpdateMoveVars()
+    {
+        MoveTimer = Random.Range(.5f, 2f);
+        direction = !direction;
+        axis = Random.Range(0, 1);
+        wait = Random.value > 0.5f;
+    }
+
+>>>>>>> master
     void FixedUpdate()
     {
         if (CanMove && Time.time > 0)
