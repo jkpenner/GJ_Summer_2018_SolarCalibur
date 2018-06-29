@@ -1,0 +1,176 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1857766422482244}
+  m_IsPrefabParent: 1
+--- !u!1 &1857766422482244
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4404187993015540}
+  - component: {fileID: 114950160660033150}
+  m_Layer: 0
+  m_Name: Background
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4404187993015540
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1857766422482244}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114950160660033150
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1857766422482244}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32b68eda3b822e740bfdf6e2b449a68b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cometFrequency: 0
+  spaceObjectCount: 150
+  objectInfos:
+  - texture: {fileID: 2800000, guid: 1ad56d8f930fbbb469cce596d6274a3b, type: 3}
+    randomWeight: 8
+    count: 0
+    minSize: 1
+    maxSize: 5
+    color1: {r: 0.91278654, g: 1, b: 0.9103774, a: 0}
+    color2: {r: 1, g: 0.48584908, b: 0.96636415, a: 0}
+    depth: 2
+  - texture: {fileID: 2800000, guid: 9603e8f5679ef37418aa63b1d427bfa2, type: 3}
+    randomWeight: 8
+    count: 0
+    minSize: 1
+    maxSize: 7
+    color1: {r: 1, g: 1, b: 1, a: 0}
+    color2: {r: 1, g: 0, b: 0.5151677, a: 0}
+    depth: 2
+  - texture: {fileID: 2800000, guid: 2a75d5318e1339746b48fc33c2e7dd2b, type: 3}
+    randomWeight: 8
+    count: 0
+    minSize: 1
+    maxSize: 8
+    color1: {r: 1, g: 1, b: 1, a: 0}
+    color2: {r: 0.08962262, g: 1, b: 0.89537776, a: 0}
+    depth: 2
+  - texture: {fileID: 2800000, guid: 0e6e8837f649f2e4597a8da4d0d05b77, type: 3}
+    randomWeight: 8
+    count: 0
+    minSize: 1
+    maxSize: 4
+    color1: {r: 1, g: 1, b: 1, a: 0}
+    color2: {r: 1, g: 0.8631822, b: 0.11792451, a: 0}
+    depth: 2
+  - texture: {fileID: 2800000, guid: 8fb92ae903b45cc42812fe17442e32c2, type: 3}
+    randomWeight: 8
+    count: 0
+    minSize: 1
+    maxSize: 4
+    color1: {r: 1, g: 1, b: 1, a: 0}
+    color2: {r: 1, g: 0.3160377, b: 0.8225431, a: 0}
+    depth: 2
+  - texture: {fileID: 2800000, guid: 015bce259b1186c47967958eb4c0326e, type: 3}
+    randomWeight: 5
+    count: 0
+    minSize: 1
+    maxSize: 4
+    color1: {r: 0.98203945, g: 1, b: 0.6273585, a: 0}
+    color2: {r: 1, g: 1, b: 1, a: 0}
+    depth: 2
+  - texture: {fileID: 2800000, guid: 659242fcac79670489d3a9d28826c8fd, type: 3}
+    randomWeight: 5
+    count: 0
+    minSize: 1
+    maxSize: 5
+    color1: {r: 1, g: 1, b: 1, a: 0}
+    color2: {r: 1, g: 0.43646842, b: 0, a: 0}
+    depth: 2
+  - texture: {fileID: 2800000, guid: 738d20638a692b143a62ce521e2a1682, type: 3}
+    randomWeight: 5
+    count: 0
+    minSize: 1
+    maxSize: 4
+    color1: {r: 0.28773582, g: 0.82661515, b: 1, a: 0}
+    color2: {r: 1, g: 1, b: 1, a: 0}
+    depth: 2
+  - texture: {fileID: 2800000, guid: b7fee4147996f514d9f906ddd1873582, type: 3}
+    randomWeight: 5
+    count: 0
+    minSize: 1
+    maxSize: 6
+    color1: {r: 1, g: 1, b: 1, a: 0}
+    color2: {r: 0.5954474, g: 1, b: 0.33490568, a: 0}
+    depth: 2
+  - texture: {fileID: 2800000, guid: f950688db5fcf6049bf91c1a3b6b6a8e, type: 3}
+    randomWeight: 1
+    count: 0
+    minSize: 1
+    maxSize: 3
+    color1: {r: 1, g: 0.4292453, b: 0.4292453, a: 0}
+    color2: {r: 1, g: 0.6959256, b: 0.023584902, a: 0}
+    depth: 0
+  - texture: {fileID: 2800000, guid: 0daf87cede61c064ab4d3627e6780c05, type: 3}
+    randomWeight: 1
+    count: 0
+    minSize: 1
+    maxSize: 5
+    color1: {r: 1, g: 0.43867922, b: 0.7163544, a: 0}
+    color2: {r: 1, g: 1, b: 1, a: 0}
+    depth: 0
+  - texture: {fileID: 2800000, guid: 8a0e8a1a58151f94fae6b07dac19b5f8, type: 3}
+    randomWeight: 1
+    count: 0
+    minSize: 1
+    maxSize: 6
+    color1: {r: 0.990566, g: 0.38781592, b: 0.38781592, a: 0}
+    color2: {r: 1, g: 1, b: 1, a: 0}
+    depth: 0
+  - texture: {fileID: 2800000, guid: a673be634896f1d469354514baabfb1a, type: 3}
+    randomWeight: 1
+    count: 0
+    minSize: 1
+    maxSize: 4
+    color1: {r: 1, g: 1, b: 1, a: 0}
+    color2: {r: 1, g: 0.46247217, b: 0.11792451, a: 0}
+    depth: 0
+  - texture: {fileID: 2800000, guid: a8ec2917419b33e4da50a07a43cfc4ca, type: 3}
+    randomWeight: 400
+    count: 0
+    minSize: 4
+    maxSize: 10
+    color1: {r: 1, g: 1, b: 1, a: 0}
+    color2: {r: 0.9676024, g: 1, b: 0, a: 0}
+    depth: 1
+  - texture: {fileID: 2800000, guid: 7f37bf0c2f85d254c8b0fa723c1f4cc7, type: 3}
+    randomWeight: 400
+    count: 0
+    minSize: 4
+    maxSize: 10
+    color1: {r: 1, g: 1, b: 1, a: 0}
+    color2: {r: 1, g: 0.69212824, b: 0.3160377, a: 0}
+    depth: 1
