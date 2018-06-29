@@ -9,6 +9,8 @@ using UnityEngine;
 public class PlanetController : MonoBehaviour {
     private Planet _planet;
 
+    public event Action<Asteroid> EventAsteroidSpawned;
+
     [Header("Movement")]
     [SerializeField]
     private float speedMovement = 5f;
@@ -27,11 +29,24 @@ public class PlanetController : MonoBehaviour {
     [SerializeField]
     private int asteroidCount = 1;
 
-    // List containing all asteroids controlled by this planet
-    private List<Asteroid> asteroids;
-
     // Linked List containing the asteroids that can be launched
     private LinkedList<Asteroid> asteroidQueue;
+
+    // List containing all asteroids controlled by this planet
+    public List<Asteroid> Asteroids { get; private set; }
+    public int ActiveAsteroids {
+        get {
+            if (asteroidQueue != null) {
+                return asteroidQueue.Count;
+            }
+            return 0;
+        }
+    }
+
+    private void Awake() {
+        Asteroids = new List<Asteroid>();
+        asteroidQueue = new LinkedList<Asteroid>();
+    }
 
     void Start() {
         // Setup event liseners on the planet being controlled
@@ -42,10 +57,6 @@ public class PlanetController : MonoBehaviour {
             OnTargetChanged(_planet.TargetPlanet);
         }
 
-        asteroids = new List<Asteroid>();
-        //asteroidQueue = new Queue<Asteroid>();
-        asteroidQueue = new LinkedList<Asteroid>();
-
         // Spawn asteroids evenly spaced around the planet with random orbit directions.
         for (int i = 0; i < asteroidCount; i++) {
             var asteroid = SpawnAsteroid(asteroidPrefab);
@@ -53,13 +64,12 @@ public class PlanetController : MonoBehaviour {
             asteroid.orbit_angle = ((float)i / asteroidCount) * 360f;
             // Setup the asteroid's parent
             asteroid.orbit_target = _planet;
-
         }
         UpdateActiveAsteroid();
     }
 
     private void OnDestroy() {
-        foreach (var a in asteroids) {
+        foreach (var a in Asteroids) {
             if (a != null) {
                 Destroy(a.gameObject);
             }
@@ -122,9 +132,15 @@ public class PlanetController : MonoBehaviour {
         new_asteroid.EventReturned += OnAsteroidReturned;
         new_asteroid.EventCollided += OnAsteroidCollided;
 
-        asteroids.Add(new_asteroid);
+        Asteroids.Add(new_asteroid);
         //asteroidQueue.Enqueue(new_asteroid);
         asteroidQueue.AddLast(new_asteroid);
+
+        if (EventAsteroidSpawned != null) {
+            EventAsteroidSpawned.Invoke(new_asteroid);
+        }
+
+
         return new_asteroid;
     }
 
@@ -132,12 +148,12 @@ public class PlanetController : MonoBehaviour {
     /// Destroys an asteroid owned by this planet.
     /// </summary>
     public void DestroyAsteroid(Asteroid instance) {
-        if (asteroids.Contains(instance)) {
+        if (Asteroids.Contains(instance)) {
             instance.EventLaunched -= OnAsteroidLaunched;
             instance.EventReturned -= OnAsteroidReturned;
             instance.EventCollided -= OnAsteroidCollided;
 
-            asteroids.Remove(instance);
+            Asteroids.Remove(instance);
             asteroidQueue.Remove(instance);
 
             Destroy(instance.gameObject);
