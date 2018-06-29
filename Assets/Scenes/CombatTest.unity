@@ -279,7 +279,27 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2debb7fbf61876e4cba598b24cc32c03, type: 2}
   m_IsPrefabParent: 0
---- !u!1 &537841942
+--- !u!1 &217428641 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1417385918312454, guid: ea9ae99539896824aa13855f0eff5dcc,
+    type: 2}
+  m_PrefabInternal: {fileID: 783914292}
+--- !u!114 &217428643
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 217428641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a49605782dfeadc428acc962e4bb8184, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Asteroid: {fileID: 1606049500853182, guid: e6b5a5a4fd5fde54f92f7e8ab04bfbcd, type: 2}
+  FireTimerMin: 1.5
+  FireTimerMax: 5
+  MaxMove: 3
+--- !u!1 &423586983
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
