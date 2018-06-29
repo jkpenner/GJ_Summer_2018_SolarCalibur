@@ -9,13 +9,19 @@ using UnityEngine;
 public class PlanetController : MonoBehaviour {
     private Planet _planet;
 
+    public event Action<Asteroid> EventAsteroidSpawned;
+
     [Header("Movement")]
     [SerializeField]
-    private float moveSpeed = 5f;
+    private float speedMovement = 5f;
     [SerializeField]
     public Transform moveTarget;
     [SerializeField]
     public float distanceFromMoveTarget = 10f;
+
+    public float minDistanceToMove = 0.1f;
+
+    public float speedRotation = 45f;
 
     [Header("Asteroids")]
     [SerializeField]
@@ -23,11 +29,24 @@ public class PlanetController : MonoBehaviour {
     [SerializeField]
     private int asteroidCount = 1;
 
-    // List containing all asteroids controlled by this planet
-    private List<Asteroid> asteroids;
-
     // Linked List containing the asteroids that can be launched
     private LinkedList<Asteroid> asteroidQueue;
+
+    // List containing all asteroids controlled by this planet
+    public List<Asteroid> Asteroids { get; private set; }
+    public int ActiveAsteroids {
+        get {
+            if (asteroidQueue != null) {
+                return asteroidQueue.Count;
+            }
+            return 0;
+        }
+    }
+
+    private void Awake() {
+        Asteroids = new List<Asteroid>();
+        asteroidQueue = new LinkedList<Asteroid>();
+    }
 
     void Start() {
         // Setup event liseners on the planet being controlled
@@ -38,10 +57,6 @@ public class PlanetController : MonoBehaviour {
             OnTargetChanged(_planet.TargetPlanet);
         }
 
-        asteroids = new List<Asteroid>();
-        //asteroidQueue = new Queue<Asteroid>();
-        asteroidQueue = new LinkedList<Asteroid>();
-
         // Spawn asteroids evenly spaced around the planet with random orbit directions.
         for (int i = 0; i < asteroidCount; i++) {
             var asteroid = SpawnAsteroid(asteroidPrefab);
@@ -49,9 +64,16 @@ public class PlanetController : MonoBehaviour {
             asteroid.orbit_angle = ((float)i / asteroidCount) * 360f;
             // Setup the asteroid's parent
             asteroid.orbit_target = _planet;
-
         }
         UpdateActiveAsteroid();
+    }
+
+    private void OnDestroy() {
+        foreach (var a in Asteroids) {
+            if (a != null) {
+                Destroy(a.gameObject);
+            }
+        }
     }
 
     private void OnTargetChanged(Planet newTarget) {
@@ -64,19 +86,38 @@ public class PlanetController : MonoBehaviour {
     /// <param name="input">Range [-1.0, 1.0]</param>
     public void MoveAroundTarget(float input) {
         if (moveTarget != null) {
-            // Snap the planet to the correct distance from the target
-            if (Vector3.Distance(moveTarget.transform.position, transform.position) != distanceFromMoveTarget) {
-                Vector3 fromTarget = (transform.position - moveTarget.transform.position).normalized;
-                transform.position = moveTarget.transform.position + (fromTarget * distanceFromMoveTarget);
+            // Check if the planet is not at the right distance from the target
+            float distanceFromTarget = Vector3.Distance(moveTarget.position, transform.position);
+            if (Mathf.Abs(distanceFromTarget - distanceFromMoveTarget) >= minDistanceToMove) {
+                //Debug.Log("Moving");
+                Vector3 toTarget = (moveTarget.position - transform.position).normalized;
+                Vector3 targetPosition = moveTarget.position - (toTarget *
+                    (distanceFromMoveTarget + minDistanceToMove));
+
+                // Lerp towards the target's position
+                transform.position = Vector3.Lerp(transform.position,
+                    targetPosition, speedMovement * Time.deltaTime);
+
+                // Update the distanceFromTarget value
+                distanceFromTarget = Vector3.Distance(
+                    moveTarget.position, transform.position);
             }
 
             // Calculate the degree of movment around the target, based on distance
-            float rotateAmount = (-Mathf.Clamp(input, -1f, 1f) * moveSpeed * Time.deltaTime)
-                / (2.0f * Mathf.PI * distanceFromMoveTarget) * 360f;
+            float rotateAmount = (-Mathf.Clamp(input, -1f, 1f) * speedMovement * Time.deltaTime)
+                / (2.0f * Mathf.PI * distanceFromTarget) * 360f;
 
             // Rotate the planet around the target's position
             transform.RotateAround(moveTarget.transform.position, Vector3.up, rotateAmount);
-            transform.rotation = Quaternion.LookRotation((moveTarget.position - transform.position).normalized);
+
+            // Get the new target rotation towards the target
+            Quaternion targetRotation = Quaternion.LookRotation(
+                (moveTarget.position - transform.position).normalized);
+
+            // Slerp towards the new target rotation to give a bit of delay
+            transform.rotation = Quaternion.Slerp(
+                transform.rotation, targetRotation,
+                speedRotation * Time.deltaTime);
         }
     }
 
@@ -91,9 +132,15 @@ public class PlanetController : MonoBehaviour {
         new_asteroid.EventReturned += OnAsteroidReturned;
         new_asteroid.EventCollided += OnAsteroidCollided;
 
-        asteroids.Add(new_asteroid);
+        Asteroids.Add(new_asteroid);
         //asteroidQueue.Enqueue(new_asteroid);
         asteroidQueue.AddLast(new_asteroid);
+
+        if (EventAsteroidSpawned != null) {
+            EventAsteroidSpawned.Invoke(new_asteroid);
+        }
+
+
         return new_asteroid;
     }
 
@@ -101,12 +148,12 @@ public class PlanetController : MonoBehaviour {
     /// Destroys an asteroid owned by this planet.
     /// </summary>
     public void DestroyAsteroid(Asteroid instance) {
-        if (asteroids.Contains(instance)) {
+        if (Asteroids.Contains(instance)) {
             instance.EventLaunched -= OnAsteroidLaunched;
             instance.EventReturned -= OnAsteroidReturned;
             instance.EventCollided -= OnAsteroidCollided;
 
-            asteroids.Remove(instance);
+            Asteroids.Remove(instance);
             asteroidQueue.Remove(instance);
 
             Destroy(instance.gameObject);

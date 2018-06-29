@@ -489,11 +489,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Damage: 1
-  VelocityMin: 4
-  VelocityMax: 7
+  SpeedMin: 2
+  SpeedMax: 6
   target: {fileID: 0}
   TurnSpeed: 1
   LifeSpan: 5
+  HomingChance: 0.426
 --- !u!135 &135502973425782304
 SphereCollider:
   m_ObjectHideFlags: 1

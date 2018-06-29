@@ -126,9 +126,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9442b8e1220bde4c86c314fe6d21cef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
+  speedMovement: 5
   moveTarget: {fileID: 0}
   distanceFromMoveTarget: 10
+  minDistanceToMove: 1
+  speedRotation: 3
   asteroidPrefab: {fileID: 114626434171317160, guid: e6b5a5a4fd5fde54f92f7e8ab04bfbcd,
     type: 2}
   asteroidCount: 4

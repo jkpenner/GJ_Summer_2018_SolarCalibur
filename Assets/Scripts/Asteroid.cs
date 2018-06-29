@@ -76,8 +76,7 @@ public class Asteroid : MonoBehaviour {
             planet = collision.gameObject.GetComponentInParent<Planet>();
         }
 
-        if (planet != null && EventCollided != null)
-        {
+        if (planet != null && EventCollided != null) {
             EventCollided.Invoke(this, planet);
         }
     }
@@ -93,9 +92,8 @@ public class Asteroid : MonoBehaviour {
 
 
     public void FixedUpdate() {
-        
-        if(orbit_target == null || orbit_target.IsAlive == false)
-        {
+
+        if (orbit_target == null || orbit_target.IsAlive == false) {
             return;
             //Destroy(this); //TODO:: put in a better place
 
@@ -129,9 +127,6 @@ public class Asteroid : MonoBehaviour {
             rigidbody.MovePosition(orbit_target.transform.position + (toPosition * OrbitRadius));
             rigidbody.MoveRotation(Quaternion.LookRotation(forward));
         } else {
-
-
-
             float move_amount = launch_speed * active_charge_mod * Time.deltaTime;
 
             CheckIfAsteroidNeedsToReturn();
@@ -143,17 +138,14 @@ public class Asteroid : MonoBehaviour {
             Vector3 next_return_position;
             if (Mathf.Max(distToTarget - move_amount, 0f) == 0) {
                 next_return_position = TargetOrbitPosition;
+                OnReturned();
             } else {
                 next_return_position = rigidbody.position +
                     ((TargetOrbitPosition - rigidbody.position).normalized * move_amount);
+                next_return_position = Vector3.Lerp(next_moved_position,
+                    next_return_position, returningPercent);
             }
-
-            next_return_position = Vector3.Lerp(next_moved_position, next_return_position, returningPercent);
             rigidbody.MovePosition(next_return_position);
-
-            if (TargetOrbitPosition == rigidbody.position) {
-                OnReturned();
-            }
         }
     }
 
