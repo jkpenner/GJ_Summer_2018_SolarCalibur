@@ -44,8 +44,10 @@ public class EnemyPlanet : Planet {
         }
     }
 
-	void Update ()
+	protected override void Update ()
     {
+        base.Update();
+
         MoveTimer -= Time.deltaTime;
 
         if (!wait) Move();

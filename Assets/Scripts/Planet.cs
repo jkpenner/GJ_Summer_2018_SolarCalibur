@@ -105,7 +105,9 @@ public class Planet : MonoBehaviour {
         Fill = 1f;
     }
 
-    void Update () {
+    protected virtual void Update () {
+
+        Debug.Log("hi " + _curHealth);
 
         float healthTranslated = _curHealth * 0.1f;
         Fill = healthTranslated;
