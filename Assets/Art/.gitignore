@@ -1,6 +1,0 @@
-*.png
-*.fbx
-*.jpg
-*.obj
-# Ignores all art assets. Only keeps meta files. 
-# All assets should be copyed/updated from a google drive folder

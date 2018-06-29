@@ -54,6 +54,14 @@ public class PlanetController : MonoBehaviour {
         UpdateActiveAsteroid();
     }
 
+    private void OnDestroy() {
+        foreach (var a in asteroids) {
+            if (a != null) {
+                Destroy(a.gameObject);
+            }
+        }
+    }
+
     private void OnTargetChanged(Planet newTarget) {
         this.moveTarget = newTarget.transform;
     }
@@ -63,7 +71,8 @@ public class PlanetController : MonoBehaviour {
     /// </summary>
     /// <param name="input">Range [-1.0, 1.0]</param>
     public void MoveAroundTarget(float input) {
-        if (moveTarget != null) {
+        if (moveTarget != null && input != 0.0f)
+        {
             // Snap the planet to the correct distance from the target
             if (Vector3.Distance(moveTarget.transform.position, transform.position) != distanceFromMoveTarget) {
                 Vector3 fromTarget = (transform.position - moveTarget.transform.position).normalized;

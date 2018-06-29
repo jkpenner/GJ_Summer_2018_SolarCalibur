@@ -11,19 +11,25 @@ public class GameManager : Singleton<GameManager> {
     private Planet playerPlanet;
     private Planet enemyPlanet;
 
-    [Header("Player Spawn Info")]
-    [SerializeField]
-    private Planet playerPlanetPrefab = null;
-    [SerializeField]
-    private Transform playerPlanetSpawn = null;
+    // Temp add a bit of delay for loading screen
+    private float load_delay = 1f;
+    private float game_complete_delay = 1f;
 
-    [Header("Enemy Spawn Info")]
-    [SerializeField]
-    private Planet enemyPlanetPrefab = null;
-    [SerializeField]
-    private Transform enemyPlanetSpawn = null;
+    //[Header("Player Spawn Info")]
+    //[SerializeField]
+    //private Planet playerPlanetPrefab = null;
+    //[SerializeField]
+    //private Transform playerPlanetSpawn = null;
+    //
+    //[Header("Enemy Spawn Info")]
+    //[SerializeField]
+    //private Planet enemyPlanetPrefab = null;
+    //[SerializeField]
+    //private Transform enemyPlanetSpawn = null;
 
     #region Static Properties and Methods
+    static public LevelAsset InitialLevel { get; set; }
+
     static public Planet PlayerPlanet {
         get {
             if (Exists) {
@@ -77,6 +83,20 @@ public class GameManager : Singleton<GameManager> {
             Instance.InternalTogglePause();
         }
     }
+
+    static public void MoveToNextLevel() {
+        if (Exists) {
+            Instance.InternalMoveToNextLevel();
+        }
+    }
+
+    static public void RestartCurrentLevel() {
+        if (Exists) {
+            Instance.InternalRestartCurrentLevel();
+        }
+    }
+
+
     #endregion
 
     private void Awake() {
@@ -88,16 +108,45 @@ public class GameManager : Singleton<GameManager> {
     }
 
     public void Start() {
-        SpawnPlanets();
+        // Check if there is a data manager in the scene to get level data
+        if (DataManager.Exists && DataManager.ActiveLevelAsset != null) {
+            // Load the background scene for the planet
+            var ao = SceneManager.LoadSceneAsync(
+                DataManager.ActiveLevelAsset.sceneName,
+                LoadSceneMode.Additive);
+            ao.completed += OnPlanetSceneLoaded;
+        }
+    }
+
+    private void OnPlanetSceneLoaded(AsyncOperation obj) {
+        StartCoroutine(DelayStartGame(load_delay));
+    }
+
+    private IEnumerator DelayStartGame(float time) {
+        yield return new WaitForSeconds(time);
+        MsgRelay.TriggerGameSceneLoaded();
+
+        SpawnPlanets(DataManager.PlayerPlanetPrefab,
+            DataManager.EnemyPlanetPrefab);
 
         InternalStartGame();
     }
 
-    private void SpawnPlanets() {
+    private void SpawnPlanets(Planet playerPlanetPrefab, Planet enemyPlanetPrefab) {
         if (enemyPlanetPrefab != null) {
             enemyPlanet = Instantiate<Planet>(enemyPlanetPrefab);
             enemyPlanet.transform.SetParent(this.transform);
-            enemyPlanet.transform.position = enemyPlanetSpawn.position;
+
+            // Look for a spawn point for the enemey
+            var enemySpawnPoint = GameObject.FindGameObjectWithTag("EnemySpawnPoint");
+            if (enemySpawnPoint != null) {
+                enemyPlanet.transform.position = enemySpawnPoint.transform.position;
+            } else {
+                Debug.LogWarning("[GameManager]: No gameobject with tag EnemySpawnPoint found " +
+                    "in the planet level secen. Spawning enemy planet at (0, 0, 0).");
+                enemyPlanet.transform.position = Vector3.zero;
+            }
+
             enemyPlanet.EventDestroyed += OnPlanetDestroyed;
 
             if (enemyPlanet != null)
@@ -110,7 +159,17 @@ public class GameManager : Singleton<GameManager> {
         if (playerPlanetPrefab != null) {
             playerPlanet = Instantiate<Planet>(playerPlanetPrefab);
             playerPlanet.transform.SetParent(this.transform);
-            playerPlanet.transform.position = playerPlanetSpawn.position;
+
+            // Look for a spawn point for the player
+            var playerSpawnPoint = GameObject.FindGameObjectWithTag("PlayerSpawnPoint");
+            if (playerSpawnPoint != null) {
+                playerPlanet.transform.position = playerSpawnPoint.transform.position;
+            } else {
+                Debug.LogWarning("[GameManager]: No gameobject with tag PlayerSpawnPoint found " +
+                    "in the planet level secen. Spawning player planet at (0, 0, 0).");
+                playerPlanet.transform.position = Vector3.zero;
+            }
+
             playerPlanet.EventDestroyed += OnPlanetDestroyed;
 
             if (playerPlanet != null)
@@ -133,13 +192,13 @@ public class GameManager : Singleton<GameManager> {
 
         InternalCompleteGame();
 
-        StartCoroutine(ReloadScene());
+        // Temp Code: Move To Next should be call by ui
+        //StartCoroutine(TestMoveToNext());
     }
 
-    public IEnumerator ReloadScene() {
+    public IEnumerator TestMoveToNext() {
         yield return new WaitForSeconds(1f);
-        // Temp Code
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        GameManager.MoveToNextLevel();
     }
 
     private void InternalStartGame() {
@@ -153,6 +212,11 @@ public class GameManager : Singleton<GameManager> {
     }
 
     private void InternalCompleteGame() {
+        StartCoroutine(DelayedCompleteGame(game_complete_delay));
+    }
+
+    public IEnumerator DelayedCompleteGame(float time) {
+        yield return new WaitForSeconds(time);
         if (_isGameActive == true) {
             _isGameActive = false;
             MsgRelay.TriggerGameComplete();
@@ -168,5 +232,43 @@ public class GameManager : Singleton<GameManager> {
             MsgRelay.TriggerGamePause();
         else
             MsgRelay.TriggerGameResume();
+    }
+
+    private void InternalMoveToNextLevel() {
+        if (DataManager.Exists) {
+            var ao = SceneManager.UnloadSceneAsync(
+                DataManager.ActiveLevelAsset.sceneName);
+            ao.completed += (op) =>
+            {
+                MsgRelay.TriggerGameSceneUnloaded();
+
+                DataManager.MoveToNextLevel();
+                LoadActiveScene();
+            };
+        }
+    }
+
+    private void InternalRestartCurrentLevel() {
+        if (DataManager.Exists) {
+            var ao = SceneManager.UnloadSceneAsync(
+                DataManager.ActiveLevelAsset.sceneName);
+            ao.completed += (op) =>
+            {
+                MsgRelay.TriggerGameSceneUnloaded();
+
+                LoadActiveScene();
+            };
+        }
+    }
+
+    private void LoadActiveScene() {
+        if (DataManager.ActiveLevelAsset != null) {
+            var ao = SceneManager.LoadSceneAsync(
+                DataManager.ActiveLevelAsset.sceneName,
+                LoadSceneMode.Additive);
+            ao.completed += OnPlanetSceneLoaded;
+        } else {
+            SceneManager.LoadSceneAsync("MainMenu");
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class Planet : MonoBehaviour {
@@ -19,6 +20,9 @@ public class Planet : MonoBehaviour {
     public Planet _temp_intial_target = null;
     // Is assigned from the SpawnPlanet method in GameManager
     public Planet TargetPlanet { get; private set; }
+
+    public Image Bar;
+    public float Fill;
 
     /// <summary>
     /// Triggers when the planet takes damage
@@ -95,6 +99,18 @@ public class Planet : MonoBehaviour {
                 _eventDestroyed.Invoke(this);
             MsgRelay.TriggerPlanetDestroyed(this);
         }
+    }
+
+    void Start () {
+        Fill = 1f;
+    }
+
+    void Update () {
+
+        float healthTranslated = _curHealth * 0.1f;
+        Fill = healthTranslated;
+
+        Bar.fillAmount = Fill;
     }
 
 }
