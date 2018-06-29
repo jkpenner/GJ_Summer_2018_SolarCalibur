@@ -27,33 +27,27 @@ public class EnemyPlanet : Planet
     private float maxMove;
     private bool wait;
 
-    void Start ()
+    void Start()
     {
-<<<<<<< HEAD
-=======
         direction = LEFT;
         axis = 0;
         UpdateMoveVars();
->>>>>>> master
         MsgRelay.EventGameComplete += OnGameComplete;
         fireTimer = Random.Range(FireTimerMin, FireTimerMax);
         initialZPos = transform.position.z;
         target = GameObject.FindGameObjectWithTag("Player");
         RotateTowardsTarget();
     }
-<<<<<<< HEAD
-	
-	void Update ()
-    {
-=======
 
-    private void OnDestroy() {
-        if (MsgRelay.Exists) {
+    private void OnDestroy()
+    {
+        if (MsgRelay.Exists)
+        {
             MsgRelay.EventGameComplete -= OnGameComplete;
         }
     }
 
-	void Update ()
+    void Update()
     {
         MoveTimer -= Time.deltaTime;
 
@@ -68,7 +62,6 @@ public class EnemyPlanet : Planet
         if (Mathf.Abs(position) >= MaxMove) direction = !direction;
         if (MoveTimer <= 0.0f) UpdateMoveVars();
 
->>>>>>> master
         fireTimer -= Time.deltaTime;
 
         //Once the fire timer hits zero, fire the asteroid and reset the timer
@@ -79,8 +72,6 @@ public class EnemyPlanet : Planet
         }
     }
 
-<<<<<<< HEAD
-=======
     void Move()
     {
         float speed = .1f;
@@ -102,7 +93,6 @@ public class EnemyPlanet : Planet
         wait = Random.value > 0.5f;
     }
 
->>>>>>> master
     void FixedUpdate()
     {
         if (CanMove && Time.time > 0)
@@ -144,7 +134,7 @@ public class EnemyPlanet : Planet
 
     void Fire()
     {
-        if(target != null)
+        if (target != null)
         {
             //Make new projectile that fires from just outside the planet's radius
             Vector3 dir = (target.transform.position - transform.position).normalized;
