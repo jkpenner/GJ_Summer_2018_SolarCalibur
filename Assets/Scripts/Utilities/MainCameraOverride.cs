@@ -5,6 +5,21 @@ using UnityEngine;
 public class MainCameraOverride : MonoBehaviour {
     private Camera mainCamera = null;
 
+    private static MainCameraOverride _Instance;
+
+    public static MainCameraOverride Instance
+    {
+        get
+        {
+            if(_Instance == null)
+            {
+                _Instance = GameObject.Find("SkyboxCamera").GetComponent<MainCameraOverride>();
+            }
+
+            return _Instance;
+        }
+    }
+
     private void OnEnable() {
         if (Camera.main != null) {
             mainCamera = Camera.main;

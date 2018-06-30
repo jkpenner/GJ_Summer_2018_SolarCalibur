@@ -30,6 +30,8 @@ public class PlanetAI : MonoBehaviour
 	
 	void Update ()
     {
+        Debug.Log(MainCameraOverride.Instance.transform.position);
+
         MoveTimer -= Time.deltaTime;
 
         if (!wait) Move();

@@ -106,6 +106,7 @@ public class PlanetController : MonoBehaviour {
     /// </summary>
     /// <param name="input">Range [-1.0, 1.0]</param>
     public void MoveAroundTarget(float input) {
+
         if (moveTarget != null) {
             // Check if the planet is not at the right distance from the target
             float distanceFromTarget = Vector3.Distance(moveTarget.position, transform.position);
