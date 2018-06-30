@@ -292,10 +292,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66544375f0e4e472dad13855ad8c5125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BillboardX: 1
-  BillboardY: 1
-  BillboardZ: 1
-  OffsetToCamera: 0
+  m_Camera: {fileID: 0}
 --- !u!114 &114292342223654988
 MonoBehaviour:
   m_ObjectHideFlags: 1
