@@ -41,12 +41,14 @@ public class Asteroid : MonoBehaviour {
     private bool isOrbitting = true;
     private bool isReturning = false;
     private float returningPercent = 0f;
-
+/*
     private AudioSource[] sounds;
     public AudioSource   hit1;
     public AudioSource   hit2;
 
-
+*/
+    public CameraAudio Audio;
+    
 
     public bool IsOrbitting { get { return isOrbitting; } }
 
@@ -65,10 +67,12 @@ public class Asteroid : MonoBehaviour {
         }
     
         rigidbody.isKinematic = true;
-    
+        Audio = FindObjectOfType<CameraAudio>();
+    /*
         sounds = GetComponents<AudioSource>();
         hit1 = sounds[0];
         hit2 = sounds[1];
+     */
 }
 
 
@@ -94,7 +98,8 @@ public class Asteroid : MonoBehaviour {
         }
 
         if (planet != null && EventCollided != null) {
-            hit1.Play();
+            //hit1.Play();
+            Audio.EarthHitAud();
             EventCollided.Invoke(this, planet);
             
         }

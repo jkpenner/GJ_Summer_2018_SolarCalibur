@@ -15,7 +15,7 @@ public class CameraAudio : MonoBehaviour {
         
 	}
 	
-    void EarthHitAud()
+    public void EarthHitAud()
     {
         if (Random.Range(0,1)==0)
         {
@@ -25,7 +25,7 @@ public class CameraAudio : MonoBehaviour {
             source.PlayOneShot(EHit2, 1f);
         }
     }
-    void PlutoHitAud()
+    public void PlutoHitAud()
     {
         if (Random.Range(0,1)==0)
         {

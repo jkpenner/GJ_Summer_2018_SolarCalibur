@@ -8,10 +8,14 @@ public class Rocket : Projectile {
     public float LifeSpan;
     [Range(0.0f, 1.0f)]
     public float HomingChance;
-
+/*
 public AudioSource[] sounds;
 public AudioSource   hit1;
 public AudioSource   hit2;
+ */
+
+    public CameraAudio Audio;
+
     private bool IsHoming;
 
     // Use this for initialization
@@ -27,9 +31,12 @@ public AudioSource   hit2;
         } else {
             SetVelocity(SpeedMax);
         }
+        Audio = FindObjectOfType<CameraAudio>();
+        /*
         sounds = GetComponents<AudioSource>();
         hit1 = sounds[0];
         hit2 = sounds[1];
+         */
     }
 
     // Update is called once per frame
@@ -82,11 +89,11 @@ public AudioSource   hit2;
 
         if (planet != null) //TODO:: Change if we have multiple players
         {
-            hit1.Play();
+            Audio.PlutoHitAud();
             planet.Damage(this.Damage);
         }
 
-        // Destroy asteroid on collision
+// Destroy asteroid on collision:
         Destroy(gameObject);
     }
 }
