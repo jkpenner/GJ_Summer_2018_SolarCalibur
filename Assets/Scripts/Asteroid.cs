@@ -67,7 +67,7 @@ public class Asteroid : MonoBehaviour {
         }
     
         rigidbody.isKinematic = true;
-        Audio = FindObjectOfType<CameraAudio>();
+        Audio = MainCameraOverride.Instance.GetComponent<CameraAudio>();// FindObjectOfType<CameraAudio>();
     /*
         sounds = GetComponents<AudioSource>();
         hit1 = sounds[0];
