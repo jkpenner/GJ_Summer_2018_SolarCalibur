@@ -78,7 +78,7 @@ public class Planet : MonoBehaviour {
         }
     }
 
-    public void Damage(int amount) {
+    public virtual void Damage(int amount) {
         if (amount <= 0) return;
 
         _curHealth -= amount;
