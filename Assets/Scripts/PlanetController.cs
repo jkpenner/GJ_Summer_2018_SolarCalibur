@@ -39,12 +39,22 @@ public class PlanetController : MonoBehaviour {
 
     // List containing all asteroids controlled by this planet
     public List<Asteroid> Asteroids { get; private set; }
+
     public int ActiveAsteroids {
         get {
             if (asteroidQueue != null) {
                 return asteroidQueue.Count;
             }
             return 0;
+        }
+    }
+
+    public Asteroid ActiveAsteroid {
+        get {
+            if (asteroidQueue != null && asteroidQueue.Count > 0) {
+                return asteroidQueue.First.Value;
+            }
+            return null;
         }
     }
 
