@@ -131,9 +131,16 @@ MonoBehaviour:
   distanceFromMoveTarget: 10
   minDistanceToMove: 1
   speedRotation: 3
-  asteroidPrefab: {fileID: 114626434171317160, guid: e6b5a5a4fd5fde54f92f7e8ab04bfbcd,
-    type: 2}
-  asteroidCount: 4
+  asteroidSetups:
+  - prefab: {fileID: 114556661765828264, guid: c693f1a7e84ed8040895fc87cd781c92, type: 2}
+    spawnCount: 2
+    clockwise: 1
+  - prefab: {fileID: 114220069004285482, guid: dffbc5d8e6e01f54dbc8ad756d49a939, type: 2}
+    spawnCount: 1
+    clockwise: 0
+  - prefab: {fileID: 114470934909626958, guid: 0d82cff6006e10b46a5686d5d2ec50d1, type: 2}
+    spawnCount: 1
+    clockwise: 0
 --- !u!114 &114876940918610284
 MonoBehaviour:
   m_ObjectHideFlags: 1

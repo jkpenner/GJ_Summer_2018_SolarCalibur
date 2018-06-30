@@ -8,11 +8,19 @@ public class UIMainMenu : MonoBehaviour {
     public Button new_game;
 
     private void OnEnable() {
-        new_game.onClick.AddListener(OnNewGameClick);
+        if (new_game != null)
+            new_game.onClick.AddListener(OnNewGameClick);
     }
 
     private void OnDisable() {
-        new_game.onClick.RemoveListener(OnNewGameClick);
+        if (new_game != null)
+            new_game.onClick.RemoveListener(OnNewGameClick);
+    }
+
+    private void Update() {
+        if (Input.anyKeyDown) {
+            OnNewGameClick();
+        }
     }
 
     private void OnNewGameClick() {

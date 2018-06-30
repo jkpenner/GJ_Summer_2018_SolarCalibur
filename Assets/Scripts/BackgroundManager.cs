@@ -12,43 +12,39 @@ public class BackgroundManager : MonoBehaviour {
 
     public ObjectInfo[] objectInfos;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start() {
         prefab = Resources.Load("space object") as GameObject;
         spaceObjectContainer = new GameObject("space objects");
 
-        foreach (var oi in objectInfos)
-        {
-            if(oi.count > 0)
-            {
-                for (int i = 0; i < oi.count; i++)
-                {
+        foreach (var oi in objectInfos) {
+            if (oi.count > 0) {
+                for (int i = 0; i < oi.count; i++) {
                     MakeSpaceObject(oi);
                 }
             }
         }
 
-        for (int i = 0; i < spaceObjectCount; i++)
-        {
+        for (int i = 0; i < spaceObjectCount; i++) {
             MakeSpaceObject(GetRandomObjectInfo());
         }
-	}
+    }
 
-    private ObjectInfo GetRandomObjectInfo()
-    {
+    private void OnDestroy() {
+        Destroy(spaceObjectContainer);
+    }
+
+    private ObjectInfo GetRandomObjectInfo() {
         int totalWeight = 0;
-        foreach (var oi in objectInfos)
-        {
+        foreach (var oi in objectInfos) {
             totalWeight += oi.randomWeight;
         }
 
         int r = Random.Range(0, totalWeight);
         int indexSoFar = 0;
-        foreach (var oi in objectInfos)
-        {
+        foreach (var oi in objectInfos) {
             indexSoFar += oi.randomWeight;
-            if (r < indexSoFar)
-            {
+            if (r < indexSoFar) {
                 return oi;
             }
         }
@@ -56,8 +52,7 @@ public class BackgroundManager : MonoBehaviour {
     }
 
 
-    private void MakeSpaceObject(ObjectInfo oi)
-    {
+    private void MakeSpaceObject(ObjectInfo oi) {
         Vector3 position = Random.onUnitSphere * (10 + oi.depth);
         GameObject newSpaceObject = Instantiate(prefab, position, Quaternion.identity) as GameObject;
         newSpaceObject.transform.parent = spaceObjectContainer.transform;
@@ -69,20 +64,18 @@ public class BackgroundManager : MonoBehaviour {
         mat.color = newColor;
 
         float newSize = Random.Range(oi.minSize, oi.maxSize);
-        newSpaceObject.transform.localScale = new Vector3(newSize, newSize, newSize); 
+        newSpaceObject.transform.localScale = new Vector3(newSize, newSize, newSize);
     }
-	
-	// Update is called once per frame
-	void Update () {
-        if (!GameManager.IsGamePaused)
-        {
+
+    // Update is called once per frame
+    void Update() {
+        if (!GameManager.IsGamePaused && GameManager.PlayerPlanet != null) {
             spaceObjectContainer.transform.position = GameManager.PlayerPlanet.transform.position;
         }
     }
 
     [System.Serializable]
-    public class ObjectInfo
-    {
+    public class ObjectInfo {
         public Texture texture;
         public int randomWeight;
         public int count;
