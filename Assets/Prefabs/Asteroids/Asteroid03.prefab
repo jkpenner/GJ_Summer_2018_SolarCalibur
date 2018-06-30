@@ -406,7 +406,7 @@ GameObject:
   - component: {fileID: 135110326965512858}
   m_Layer: 0
   m_Name: Asteroid03
-  m_TagString: Untagged
+  m_TagString: Asteroid
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1445,9 +1445,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targeting: {fileID: 224080160762955310}
   rigidbody: {fileID: 54960492496094480}
-  Damage: 0
+  Damage: 3
   orbit_speed: 6
-  orbit_radius: 1
+  orbit_radius: 1.3
   orbit_target: {fileID: 0}
   orbit_angle: 0
   orbit_direction: 1
