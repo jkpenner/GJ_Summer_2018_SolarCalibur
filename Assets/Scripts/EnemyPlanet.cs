@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -28,6 +28,8 @@ public class EnemyPlanet : Planet {
     private float maxMove;
     private bool wait;
 
+private AudioSource rocketSFX;
+
     void Start ()
     {
         direction = LEFT;
@@ -38,7 +40,11 @@ public class EnemyPlanet : Planet {
         initialZPos = transform.position.z;
         target = GameObject.FindGameObjectWithTag("Player");
         RotateTowardsTarget();
+<<<<<<< HEAD
         faceMat = transform.GetChild(0).GetChild(0).GetComponent<MeshRenderer>().material;
+=======
+        rocketSFX = GetComponent<AudioSource>();
+>>>>>>> bf8fa675de6b707362392e40970a260680d48838
     }
 
     private void OnDestroy() {
@@ -144,6 +150,7 @@ public class EnemyPlanet : Planet {
             Quaternion rotation = Quaternion.LookRotation(spawnPos - transform.position);
             GameObject projectile = (GameObject)Instantiate(Projectile, spawnPos, rotation);
             projectile.SetActive(true);
+            rocketSFX.Play();
         }
     }
 
