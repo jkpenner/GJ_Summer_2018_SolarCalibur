@@ -1,11 +1,15 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+
+
 public class UIMainMenu : MonoBehaviour {
     public Button new_game;
+
+
 
     private void OnEnable() {
         if (new_game != null)
