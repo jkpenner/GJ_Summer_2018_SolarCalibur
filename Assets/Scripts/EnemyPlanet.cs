@@ -40,11 +40,8 @@ private AudioSource rocketSFX;
         initialZPos = transform.position.z;
         target = GameObject.FindGameObjectWithTag("Player");
         RotateTowardsTarget();
-<<<<<<< HEAD
         faceMat = transform.GetChild(0).GetChild(0).GetComponent<MeshRenderer>().material;
-=======
         rocketSFX = GetComponent<AudioSource>();
->>>>>>> bf8fa675de6b707362392e40970a260680d48838
     }
 
     private void OnDestroy() {
