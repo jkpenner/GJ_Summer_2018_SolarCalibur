@@ -23,11 +23,16 @@ public class PlanetController : MonoBehaviour {
 
     public float speedRotation = 45f;
 
+
+    [System.Serializable]
+    public class AsteroidSetup {
+        public Asteroid prefab;
+        public int spawnCount = 1;
+        public bool clockwise = true;
+    }
+
     [Header("Asteroids")]
-    [SerializeField]
-    private Asteroid asteroidPrefab = null;
-    [SerializeField]
-    private int asteroidCount = 1;
+    public AsteroidSetup[] asteroidSetups;
 
     // Linked List containing the asteroids that can be launched
     private LinkedList<Asteroid> asteroidQueue;
@@ -58,15 +63,21 @@ public class PlanetController : MonoBehaviour {
         }
 
         // Spawn asteroids evenly spaced around the planet with random orbit directions.
-        for (int i = 0; i < asteroidCount; i++) {
-            var asteroid = SpawnAsteroid(asteroidPrefab);
-            asteroid.orbit_direction = UnityEngine.Random.Range(0, 2) == 0 ? 1 : -1;
-            asteroid.orbit_angle = ((float)i / asteroidCount) * 360f;
-            // Setup the asteroid's parent
-            asteroid.orbit_target = _planet;
+        foreach (var setup in asteroidSetups) {
+            for (int i = 0; i < setup.spawnCount; i++) {
+                var asteroid = SpawnAsteroid(setup.prefab);
+                asteroid.orbit_direction = setup.clockwise ? 1 : -1;
+                // Setup the asteroid's parent
+                asteroid.orbit_target = _planet;
+            }
+            UpdateActiveAsteroid();
         }
-        UpdateActiveAsteroid();
+
+        for (int i = 0; i < Asteroids.Count; i++) {
+            Asteroids[i].orbit_angle = ((float)i / Asteroids.Count) * 360f;
+        }
     }
+
 
     private void OnDestroy() {
         foreach (var a in Asteroids) {
@@ -125,7 +136,7 @@ public class PlanetController : MonoBehaviour {
     /// Spawns an asteroid and sets up all required values and listeners
     /// </summary>
     public Asteroid SpawnAsteroid(Asteroid prefab) {
-        var new_asteroid = Instantiate(asteroidPrefab);
+        var new_asteroid = Instantiate(prefab);
 
         // Setup lisenters for the asteroid's event
         new_asteroid.EventLaunched += OnAsteroidLaunched;

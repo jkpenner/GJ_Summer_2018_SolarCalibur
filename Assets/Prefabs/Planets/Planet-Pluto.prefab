@@ -28,7 +28,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1424562427880390
 GameObject:
   m_ObjectHideFlags: 0
@@ -56,6 +56,7 @@ GameObject:
   - component: {fileID: 4680817619180948}
   - component: {fileID: 33320889680962688}
   - component: {fileID: 23833542263132382}
+  - component: {fileID: 114529186000545088}
   m_Layer: 0
   m_Name: Pluto
   m_TagString: Untagged
@@ -99,7 +100,7 @@ Transform:
   m_GameObject: {fileID: 1527682159110868}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 4381694087498394}
   m_RootOrder: 1
@@ -217,9 +218,28 @@ MonoBehaviour:
   distanceFromMoveTarget: 10
   minDistanceToMove: 1
   speedRotation: 3
-  asteroidPrefab: {fileID: 114626434171317160, guid: e6b5a5a4fd5fde54f92f7e8ab04bfbcd,
-    type: 2}
-  asteroidCount: 4
+  asteroidSetups:
+  - prefab: {fileID: 114556661765828264, guid: c693f1a7e84ed8040895fc87cd781c92, type: 2}
+    spawnCount: 2
+    clockwise: 1
+  - prefab: {fileID: 114220069004285482, guid: dffbc5d8e6e01f54dbc8ad756d49a939, type: 2}
+    spawnCount: 1
+    clockwise: 0
+  - prefab: {fileID: 114470934909626958, guid: 0d82cff6006e10b46a5686d5d2ec50d1, type: 2}
+    spawnCount: 1
+    clockwise: 0
+--- !u!114 &114529186000545088
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1527682159110868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed4600aefc2ed714c902f2085e8a7bf2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speeds: {x: 0, y: 120, z: 40}
 --- !u!135 &135835039735688280
 SphereCollider:
   m_ObjectHideFlags: 1
