@@ -141,6 +141,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4353153573066844}
+  - component: {fileID: 23303708940539900}
+  - component: {fileID: 33652553439192306}
   m_Layer: 0
   m_Name: astroid
   m_TagString: Untagged
@@ -649,8 +651,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1175187692028494}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.023127, y: -0.77226, z: 0.026606}
-  m_LocalScale: {x: 0.09338803, y: 0.09338806, z: 0.09338806}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_Children:
   - {fileID: 4356947492001000}
   - {fileID: 4034672883303446}
@@ -970,6 +972,41 @@ Transform:
   m_Father: {fileID: 4353153573066844}
   m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!23 &23303708940539900
+MeshRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1175187692028494}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
+  m_Materials:
+  - {fileID: 2100000, guid: 322a4ba2022b58a4bb1ad7b6b437f5b5, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
 --- !u!23 &23409921333916810
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -1012,6 +1049,13 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1171954690884968}
   m_Mesh: {fileID: 4300000, guid: 1cd9adc90ee9896438f9cc42a8147850, type: 3}
+--- !u!33 &33652553439192306
+MeshFilter:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1175187692028494}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!54 &54428526104682792
 Rigidbody:
   m_ObjectHideFlags: 1
@@ -1417,8 +1461,7 @@ MonoBehaviour:
   min_charge_mod: 1
   max_charge_mod: 3
   isActive: 0
-  hit1: {fileID: 0}
-  hit2: {fileID: 0}
+  Audio: {fileID: 0}
 --- !u!114 &114654772041981344
 MonoBehaviour:
   m_ObjectHideFlags: 1
