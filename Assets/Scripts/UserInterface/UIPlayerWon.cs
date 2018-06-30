@@ -8,12 +8,6 @@ public class UIPlayerWon : MonoBehaviour {
     public GameObject content;
     public Button nextLevelBtn;
 
-    private void Start()
-    {
-
-        GetComponent<Image>().enabled = false;
-    }
-
     private void OnEnable() {
         if (MsgRelay.Exists) {
             MsgRelay.EventGameComplete += OnGameComplete;
@@ -38,7 +32,6 @@ public class UIPlayerWon : MonoBehaviour {
         if (GameManager.Exists) {
             if (GameManager.PlayerPlanet.IsAlive && GameManager.EnemyPlanet.IsAlive == false) {
                 content.gameObject.SetActive(true);
-                GetComponent<Image>().enabled = true;
             }
         }
     }

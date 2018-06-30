@@ -492,7 +492,7 @@ MonoBehaviour:
   SpeedMin: 2
   SpeedMax: 6
   target: {fileID: 0}
-  TurnSpeed: 0.3
+  TurnSpeed: 1
   LifeSpan: 5
   HomingChance: 0.426
   Audio: {fileID: 0}
