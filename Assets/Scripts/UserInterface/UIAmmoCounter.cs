@@ -3,51 +3,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UIAmmoCounter : MonoBehaviour {
-    public GameObject content;
+public class UIAmmoCounter : UIGameplayElement {
     public GameObject[] slots;
 
-    private Planet activePlanet;
-    private PlanetController activeController;
+    protected override void OnEnable() {
+        base.OnEnable();
 
-    private void OnEnable() {
         if (GameManager.Exists && GameManager.PlayerPlanet != null) {
-            content.SetActive(GameManager.IsGameActive);
             OnPlayerAssigned(GameManager.PlayerPlanet);
         }
-
-        if (MsgRelay.Exists) {
-            MsgRelay.EventPlayerAssigned += OnPlayerAssigned;
-            MsgRelay.EventPlayerUnassigned += OnPlayerUnassigned;
-            MsgRelay.EventGameStart += OnGameStart;
-            MsgRelay.EventGameComplete += OnGameComplete;
-        }
     }
 
-    private void OnDisable() {
-        if (MsgRelay.Exists) {
-            MsgRelay.EventPlayerAssigned -= OnPlayerAssigned;
-            MsgRelay.EventPlayerUnassigned -= OnPlayerUnassigned;
-        }
-    }
-
-    private void OnGameStart() {
-        content.SetActive(true);
-    }
-
-    private void OnGameComplete() {
-        content.SetActive(false);
-    }
-
-    private void OnPlayerAssigned(Planet planet) {
+    protected override void OnPlayerAssigned(Planet planet) {
+        base.OnPlayerAssigned(planet);
         Debug.Log("Assigning player planet");
-        activePlanet = planet;
-        activeController = planet.GetComponent<PlanetController>();
-        activeController.EventAsteroidSpawned += OnAsteroidSpawned;
 
-        if (activeController != null) {
+        ActiveController.EventAsteroidSpawned += OnAsteroidSpawned;
+        if (ActiveController != null) {
             Debug.Log("fdlkjsdf");
-            foreach (var a in activeController.Asteroids) {
+            foreach (var a in ActiveController.Asteroids) {
                 Debug.Log("asdfasdfasdf");
                 a.EventLaunched += OnAsteroidLaunched;
                 a.EventReturned += OnAsteroidReturned;
@@ -55,23 +29,22 @@ public class UIAmmoCounter : MonoBehaviour {
         }
     }
 
+    protected override void OnPlayerUnassigned(Planet planet) {
+        Debug.Log("Unassigning player planet");
+        if (ActiveController != null) {
+            foreach (var a in ActiveController.Asteroids) {
+                a.EventLaunched -= OnAsteroidLaunched;
+                a.EventReturned -= OnAsteroidReturned;
+            }
+        }
+        base.OnPlayerUnassigned(planet);
+    }
+
     private void OnAsteroidSpawned(Asteroid a) {
         a.EventLaunched += OnAsteroidLaunched;
         a.EventReturned += OnAsteroidReturned;
 
         UpdateAsteroidSlots();
-    }
-
-    private void OnPlayerUnassigned(Planet planet) {
-        Debug.Log("Unassigning player planet");
-        if (activeController != null) {
-            foreach (var a in activeController.Asteroids) {
-                a.EventLaunched -= OnAsteroidLaunched;
-                a.EventReturned -= OnAsteroidReturned;
-            }
-            activeController = null;
-        }
-        activePlanet = null;
     }
 
     private void OnAsteroidLaunched(Asteroid obj) {
@@ -86,7 +59,7 @@ public class UIAmmoCounter : MonoBehaviour {
 
     private void UpdateAsteroidSlots() {
         for (int i = 0; i < slots.Length; i++) {
-            slots[i].SetActive(i < activeController.ActiveAsteroids);
+            slots[i].SetActive(i < ActiveController.ActiveAsteroids);
         }
     }
 }
