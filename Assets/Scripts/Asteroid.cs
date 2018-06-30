@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -42,6 +42,10 @@ public class Asteroid : MonoBehaviour {
     private bool isReturning = false;
     private float returningPercent = 0f;
 
+    private AudioSource[] sounds;
+    public AudioSource   hit1;
+    public AudioSource   hit2;
+
 
 
     public bool IsOrbitting { get { return isOrbitting; } }
@@ -53,6 +57,19 @@ public class Asteroid : MonoBehaviour {
     public float OrbitRadius {
         get { return isActive ? orbit_radius : orbit_radius * 0.75f; }
     }
+
+    private void Awake() {
+        this.rigidbody = GetComponent<Rigidbody>();
+        if (rigidbody == null) {
+            rigidbody = gameObject.AddComponent<Rigidbody>();
+        }
+    
+        rigidbody.isKinematic = true;
+    
+        sounds = GetComponents<AudioSource>();
+        hit1 = sounds[0];
+        hit2 = sounds[1];
+}
 
 
     public Vector3 TargetOrbitPosition {
@@ -77,17 +94,10 @@ public class Asteroid : MonoBehaviour {
         }
 
         if (planet != null && EventCollided != null) {
+            hit1.Play();
             EventCollided.Invoke(this, planet);
+            
         }
-    }
-
-    private void Awake() {
-        this.rigidbody = GetComponent<Rigidbody>();
-        if (rigidbody == null) {
-            rigidbody = gameObject.AddComponent<Rigidbody>();
-        }
-
-        rigidbody.isKinematic = true;
     }
 
 

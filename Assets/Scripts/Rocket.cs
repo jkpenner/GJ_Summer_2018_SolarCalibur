@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,6 +9,9 @@ public class Rocket : Projectile {
     [Range(0.0f, 1.0f)]
     public float HomingChance;
 
+public AudioSource[] sounds;
+public AudioSource   hit1;
+public AudioSource   hit2;
     private bool IsHoming;
 
     // Use this for initialization
@@ -24,6 +27,9 @@ public class Rocket : Projectile {
         } else {
             SetVelocity(SpeedMax);
         }
+        sounds = GetComponents<AudioSource>();
+        hit1 = sounds[0];
+        hit2 = sounds[1];
     }
 
     // Update is called once per frame
@@ -76,6 +82,7 @@ public class Rocket : Projectile {
 
         if (planet != null) //TODO:: Change if we have multiple players
         {
+            hit1.Play();
             planet.Damage(this.Damage);
         }
 
