@@ -46,6 +46,10 @@ public class EnemyPlanet : Planet {
 
 	void Update ()
     {
+        //Vector3 lookDir = target.transform.position - transform.position;
+        //Quaternion toRotation = Quaternion.LookRotation(lookDir);
+        //transform.rotation = Quaternion.Lerp(transform.rotation, toRotation, 3f * Time.deltaTime);
+
         MoveTimer -= Time.deltaTime;
 
         if (!wait) Move();
@@ -91,6 +95,9 @@ public class EnemyPlanet : Planet {
 
     void FixedUpdate()
     {
+        RotateTowardsTarget();
+
+
         if (CanMove && Time.time > 0)
         {
             if (Time.time > timeTilChangeDirection + timer)
@@ -114,11 +121,11 @@ public class EnemyPlanet : Planet {
             }
         }
 
-        RotateTowardsTarget();
     }
 
     void RotateTowardsTarget() {
         if (target != null) {
+
             float step = 1.0f * Time.deltaTime;
             Vector3 newDir = Vector3.RotateTowards(transform.forward, target.transform.position, step, 0.0f);
             transform.rotation = Quaternion.LookRotation(newDir);

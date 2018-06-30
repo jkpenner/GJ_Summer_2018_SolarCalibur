@@ -11,6 +11,8 @@ public class PlanetAI : MonoBehaviour
 
     //TODO:: Add player object here so enemy can target the player
 
+    private Planet player;
+
     private float FireTimer;    //The timer that gets reset after this enemy fires at their target
     private float MoveTimer;
     private bool RIGHT = true;
@@ -26,11 +28,12 @@ public class PlanetAI : MonoBehaviour
         axis = 0;
         UpdateMoveVars();
         FireTimer = Random.Range(FireTimerMin, FireTimerMax);
+        player = GameManager.PlayerPlanet;
     }
 	
 	void Update ()
     {
-        Debug.Log(MainCameraOverride.Instance.transform.position);
+        
 
         MoveTimer -= Time.deltaTime;
 
@@ -53,10 +56,14 @@ public class PlanetAI : MonoBehaviour
             Fire();
             FireTimer = Random.Range(FireTimerMin, FireTimerMax);
         }
+
+        
     }
 
 	void Move ()
 	{
+        
+
         float speed = .1f; 
         if (!direction) speed = -speed;
         Vector3 transformDir;

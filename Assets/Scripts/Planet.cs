@@ -53,7 +53,6 @@ public class Planet : MonoBehaviour {
             SetTargetPlanet(_temp_intial_target);
         }
 
-        Debug.Log(MainCameraOverride.Instance.transform.position);
     }
 
     public void SetPlayerStatus(bool isPlayer, bool force_events = false) {
