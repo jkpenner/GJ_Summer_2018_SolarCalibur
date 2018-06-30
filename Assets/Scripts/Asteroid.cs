@@ -41,12 +41,10 @@ public class Asteroid : MonoBehaviour {
     private bool isOrbitting = true;
     private bool isReturning = false;
     private float returningPercent = 0f;
-/*
-    private AudioSource[] sounds;
-    public AudioSource   hit1;
-    public AudioSource   hit2;
 
-*/
+
+    public AudioSource launchSFX;
+
     public CameraAudio Audio;
     
 
@@ -68,11 +66,9 @@ public class Asteroid : MonoBehaviour {
     
         rigidbody.isKinematic = true;
         Audio = FindObjectOfType<CameraAudio>();
-    /*
-        sounds = GetComponents<AudioSource>();
-        hit1 = sounds[0];
-        hit2 = sounds[1];
-     */
+
+        launchSFX = GetComponent<AudioSource>();
+    
 }
 
 
@@ -247,6 +243,7 @@ public class Asteroid : MonoBehaviour {
 
             // Trigger the asteroid launch event
             if (this.EventLaunched != null) {
+                launchSFX.Play();
                 this.EventLaunched.Invoke(this);
             }
         }
