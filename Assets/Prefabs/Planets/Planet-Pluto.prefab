@@ -57,6 +57,7 @@ GameObject:
   - component: {fileID: 33320889680962688}
   - component: {fileID: 23833542263132382}
   - component: {fileID: 114529186000545088}
+  - component: {fileID: 135744737397741144}
   m_Layer: 0
   m_Name: Pluto
   m_TagString: Untagged
@@ -240,6 +241,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speeds: {x: 0, y: 120, z: 40}
+--- !u!135 &135744737397741144
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1527682159110868}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.0000002
+  m_Center: {x: 0.00000014901161, y: -0.000000059604645, z: -0.00000023841858}
 --- !u!135 &135835039735688280
 SphereCollider:
   m_ObjectHideFlags: 1
