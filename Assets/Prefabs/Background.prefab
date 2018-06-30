@@ -52,9 +52,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cometFrequency: 0
-  spaceObjectCount: 150
+  spaceObjectCount: 100
   objectInfos:
-  - texture: {fileID: 2800000, guid: 1ad56d8f930fbbb469cce596d6274a3b, type: 3}
+  - texture: {fileID: 2800000, guid: 22785e6b1e2ef5940a2fe3dfbf3a4f3c, type: 3}
     randomWeight: 8
     count: 0
     minSize: 1
@@ -62,23 +62,23 @@ MonoBehaviour:
     color1: {r: 0.91278654, g: 1, b: 0.9103774, a: 0}
     color2: {r: 1, g: 0.48584908, b: 0.96636415, a: 0}
     depth: 2
-  - texture: {fileID: 2800000, guid: 9603e8f5679ef37418aa63b1d427bfa2, type: 3}
+  - texture: {fileID: 2800000, guid: 52863305ae0a79f4b8d0e5feabeea368, type: 3}
     randomWeight: 8
     count: 0
     minSize: 1
     maxSize: 7
     color1: {r: 1, g: 1, b: 1, a: 0}
-    color2: {r: 1, g: 0, b: 0.5151677, a: 0}
+    color2: {r: 1, g: 0.4575472, b: 0.73621917, a: 0}
     depth: 2
-  - texture: {fileID: 2800000, guid: 2a75d5318e1339746b48fc33c2e7dd2b, type: 3}
+  - texture: {fileID: 2800000, guid: 438b9f436202443429ee2ab2a4ca2b87, type: 3}
     randomWeight: 8
     count: 0
     minSize: 1
     maxSize: 8
     color1: {r: 1, g: 1, b: 1, a: 0}
-    color2: {r: 0.08962262, g: 1, b: 0.89537776, a: 0}
+    color2: {r: 0.5518868, g: 1, b: 0.9478489, a: 0}
     depth: 2
-  - texture: {fileID: 2800000, guid: 0e6e8837f649f2e4597a8da4d0d05b77, type: 3}
+  - texture: {fileID: 2800000, guid: f6b1f2c234f66ef46bc81e53ae8a8431, type: 3}
     randomWeight: 8
     count: 0
     minSize: 1
@@ -86,7 +86,7 @@ MonoBehaviour:
     color1: {r: 1, g: 1, b: 1, a: 0}
     color2: {r: 1, g: 0.8631822, b: 0.11792451, a: 0}
     depth: 2
-  - texture: {fileID: 2800000, guid: 8fb92ae903b45cc42812fe17442e32c2, type: 3}
+  - texture: {fileID: 2800000, guid: e1d55b2b7bd52d54dacee5038062ca82, type: 3}
     randomWeight: 8
     count: 0
     minSize: 1
@@ -94,7 +94,7 @@ MonoBehaviour:
     color1: {r: 1, g: 1, b: 1, a: 0}
     color2: {r: 1, g: 0.3160377, b: 0.8225431, a: 0}
     depth: 2
-  - texture: {fileID: 2800000, guid: 015bce259b1186c47967958eb4c0326e, type: 3}
+  - texture: {fileID: 2800000, guid: 4fc54387cd914b34684f8cd42e9dedb7, type: 3}
     randomWeight: 5
     count: 0
     minSize: 1
@@ -102,23 +102,23 @@ MonoBehaviour:
     color1: {r: 0.98203945, g: 1, b: 0.6273585, a: 0}
     color2: {r: 1, g: 1, b: 1, a: 0}
     depth: 2
-  - texture: {fileID: 2800000, guid: 659242fcac79670489d3a9d28826c8fd, type: 3}
+  - texture: {fileID: 2800000, guid: 33c13e3a56b94f842869ef718aec149c, type: 3}
     randomWeight: 5
     count: 0
     minSize: 1
     maxSize: 5
     color1: {r: 1, g: 1, b: 1, a: 0}
-    color2: {r: 1, g: 0.43646842, b: 0, a: 0}
+    color2: {r: 1, g: 0.7347551, b: 0.3254717, a: 0}
     depth: 2
-  - texture: {fileID: 2800000, guid: 738d20638a692b143a62ce521e2a1682, type: 3}
+  - texture: {fileID: 2800000, guid: c6a807f82e299a84b95edbb4927f52a7, type: 3}
     randomWeight: 5
     count: 0
     minSize: 1
     maxSize: 4
-    color1: {r: 0.28773582, g: 0.82661515, b: 1, a: 0}
+    color1: {r: 0.6273585, g: 0.9099108, b: 1, a: 0}
     color2: {r: 1, g: 1, b: 1, a: 0}
     depth: 2
-  - texture: {fileID: 2800000, guid: b7fee4147996f514d9f906ddd1873582, type: 3}
+  - texture: {fileID: 2800000, guid: f6b1f2c234f66ef46bc81e53ae8a8431, type: 3}
     randomWeight: 5
     count: 0
     minSize: 1
@@ -126,7 +126,7 @@ MonoBehaviour:
     color1: {r: 1, g: 1, b: 1, a: 0}
     color2: {r: 0.5954474, g: 1, b: 0.33490568, a: 0}
     depth: 2
-  - texture: {fileID: 2800000, guid: f950688db5fcf6049bf91c1a3b6b6a8e, type: 3}
+  - texture: {fileID: 2800000, guid: 43919e62837cb8b44873bd1d7cbcf918, type: 3}
     randomWeight: 1
     count: 0
     minSize: 1
@@ -134,7 +134,7 @@ MonoBehaviour:
     color1: {r: 1, g: 0.4292453, b: 0.4292453, a: 0}
     color2: {r: 1, g: 0.6959256, b: 0.023584902, a: 0}
     depth: 0
-  - texture: {fileID: 2800000, guid: 0daf87cede61c064ab4d3627e6780c05, type: 3}
+  - texture: {fileID: 2800000, guid: ae327b45b6f957f409fdc059398adc16, type: 3}
     randomWeight: 1
     count: 0
     minSize: 1
@@ -142,7 +142,7 @@ MonoBehaviour:
     color1: {r: 1, g: 0.43867922, b: 0.7163544, a: 0}
     color2: {r: 1, g: 1, b: 1, a: 0}
     depth: 0
-  - texture: {fileID: 2800000, guid: 8a0e8a1a58151f94fae6b07dac19b5f8, type: 3}
+  - texture: {fileID: 2800000, guid: 2743b3e79ee9a64419257c5a4016c308, type: 3}
     randomWeight: 1
     count: 0
     minSize: 1
@@ -150,27 +150,27 @@ MonoBehaviour:
     color1: {r: 0.990566, g: 0.38781592, b: 0.38781592, a: 0}
     color2: {r: 1, g: 1, b: 1, a: 0}
     depth: 0
-  - texture: {fileID: 2800000, guid: a673be634896f1d469354514baabfb1a, type: 3}
+  - texture: {fileID: 2800000, guid: 5eaa42264208ae1459e90c4ff5190cbf, type: 3}
     randomWeight: 1
     count: 0
     minSize: 1
     maxSize: 4
     color1: {r: 1, g: 1, b: 1, a: 0}
-    color2: {r: 1, g: 0.46247217, b: 0.11792451, a: 0}
+    color2: {r: 1, g: 0.65910655, b: 0.3726415, a: 0}
     depth: 0
-  - texture: {fileID: 2800000, guid: a8ec2917419b33e4da50a07a43cfc4ca, type: 3}
-    randomWeight: 400
+  - texture: {fileID: 2800000, guid: d2b4578272aa09f4baf169881846b4a5, type: 3}
+    randomWeight: 300
     count: 0
-    minSize: 4
-    maxSize: 10
+    minSize: 10
+    maxSize: 15
     color1: {r: 1, g: 1, b: 1, a: 0}
-    color2: {r: 0.9676024, g: 1, b: 0, a: 0}
+    color2: {r: 0.98830926, g: 1, b: 0.6273585, a: 0}
     depth: 1
-  - texture: {fileID: 2800000, guid: 7f37bf0c2f85d254c8b0fa723c1f4cc7, type: 3}
-    randomWeight: 400
+  - texture: {fileID: 2800000, guid: d2b4578272aa09f4baf169881846b4a5, type: 3}
+    randomWeight: 300
     count: 0
-    minSize: 4
-    maxSize: 10
+    minSize: 10
+    maxSize: 15
     color1: {r: 1, g: 1, b: 1, a: 0}
-    color2: {r: 1, g: 0.69212824, b: 0.3160377, a: 0}
+    color2: {r: 1, g: 0.7922631, b: 0.5424528, a: 0}
     depth: 1

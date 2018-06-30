@@ -6,7 +6,7 @@ public class BackgroundManager : MonoBehaviour {
 
     public int cometFrequency;
 
-    private GameObject prefab, spaceObjectContainer, player;
+    private GameObject prefab, spaceObjectContainer;
 
     public int spaceObjectCount = 1000;
 
@@ -16,7 +16,6 @@ public class BackgroundManager : MonoBehaviour {
 	void Start () {
         prefab = Resources.Load("space object") as GameObject;
         spaceObjectContainer = new GameObject("space objects");
-        player = Camera.main.gameObject;
 
         foreach (var oi in objectInfos)
         {
@@ -75,8 +74,11 @@ public class BackgroundManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        spaceObjectContainer.transform.position = player.transform.position;
-	}
+        if (!GameManager.IsGamePaused)
+        {
+            spaceObjectContainer.transform.position = GameManager.PlayerPlanet.transform.position;
+        }
+    }
 
     [System.Serializable]
     public class ObjectInfo
