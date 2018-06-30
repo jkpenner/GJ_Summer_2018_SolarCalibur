@@ -10,8 +10,10 @@ public class EnemyPlanet : Planet {
     public float MoveDistanceMax = 1.8f;       //The max move distance this planet is allowed to move in either direction
     public bool CanMove = false;
     public float MaxMove = 3f;        //The maximum the enemy planet can move from center
-    //TODO:: Add player object here so enemy can target the player
+    public Texture baseTexture;
+    public Texture hurtTexture;
 
+    private Material faceMat;
     private float fireTimer;    //The timer that gets reset after this enemy fires at their target
     private float timeTilChangeDirection;
     private float timer;
@@ -38,6 +40,7 @@ private AudioSource rocketSFX;
         initialZPos = transform.position.z;
         target = GameObject.FindGameObjectWithTag("Player");
         RotateTowardsTarget();
+        faceMat = transform.GetChild(0).GetChild(0).GetComponent<MeshRenderer>().material;
         rocketSFX = GetComponent<AudioSource>();
     }
 
@@ -150,5 +153,25 @@ private AudioSource rocketSFX;
 
     private void OnGameComplete() {
         Destroy(gameObject);
+    }
+
+    
+
+    public override void Damage(int amount)
+    {
+        base.Damage(amount);
+
+        SetHurtTexture();
+    }
+
+    private void SetBaseTexture()
+    {
+        faceMat.SetTexture("_MainTex", baseTexture);
+    }
+
+    private void SetHurtTexture()
+    {
+        faceMat.SetTexture("_MainTex", hurtTexture);
+        Invoke("SetBaseTexture", 2f);
     }
 }

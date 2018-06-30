@@ -101,7 +101,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1604346226254118}
   m_LocalRotation: {x: 0, y: 0.9966802, z: 0, w: 0.081416644}
-  m_LocalPosition: {x: 0.21014631, y: -0.62, z: 6.714241}
+  m_LocalPosition: {x: -1.2884102, y: -3.562761, z: 5.2261786}
   m_LocalScale: {x: 3.119748, y: 3.1197474, z: 3.1197474}
   m_Children:
   - {fileID: 4119527843211334}
@@ -458,6 +458,8 @@ MonoBehaviour:
   MoveDistanceMax: 1.8
   CanMove: 0
   MaxMove: 3
+  baseTexture: {fileID: 2800000, guid: a4b6bc9789df9e74bbe2e815fc6add35, type: 3}
+  hurtTexture: {fileID: 2800000, guid: 2ef56a5f461d36343b8a6cf949e89d81, type: 3}
 --- !u!135 &135492896975313266
 SphereCollider:
   m_ObjectHideFlags: 1
