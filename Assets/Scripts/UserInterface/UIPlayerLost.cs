@@ -37,6 +37,12 @@ public class UIPlayerLost : MonoBehaviour {
         }
     }
 
+    private void Update() {
+        if (content.activeSelf && Input.anyKeyDown) {
+            OnMainMenuClick();
+        }
+    }
+
     private void OnMainMenuClick() {
         SceneManager.LoadScene("MainMenu");
     }

@@ -118,6 +118,12 @@ public class GameManager : Singleton<GameManager> {
         }
     }
 
+    private void Update() {
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            Application.Quit();
+        }
+    }
+
     private void OnPlanetSceneLoaded(AsyncOperation obj) {
         StartCoroutine(DelayStartGame(load_delay));
     }

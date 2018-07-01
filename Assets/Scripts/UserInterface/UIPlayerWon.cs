@@ -28,6 +28,12 @@ public class UIPlayerWon : MonoBehaviour {
         nextLevelBtn.onClick.RemoveListener(OnNextLevelClick);
     }
 
+    private void Update() {
+        if (content.activeSelf && Input.anyKeyDown) {
+            OnNextLevelClick();
+        }
+    }
+
     private void OnGameComplete() {
         if (GameManager.Exists) {
             if (GameManager.PlayerPlanet.IsAlive && GameManager.EnemyPlanet.IsAlive == false) {
